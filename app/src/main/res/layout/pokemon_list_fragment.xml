@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.spitchenko.pokeapp.feature.list.presentation.PokemonListViewModel" />
+
+        <variable
+            name="viewModel"
+            type="PokemonListViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:onRefreshListener="@{viewModel::refresh}"
+            app:refreshing="@{viewModel.uiModel.refreshProgressVisible}">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/pokemons_list"
+                bindingList="@{viewModel.uiModel.data}"
+                onScrolledToFooter="@{viewModel::showNextPage}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_pokemon" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <ProgressBar
+            visibleOrGone="@{viewModel.uiModel.emptyProgressVisible}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:drawableTop="@drawable/ic_fail"
+            visibleOrGone="@{viewModel.uiModel.emptyErrorVisible}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@{viewModel.uiModel.emptyError}"
+            tools:text="Error" />
+
+        <Button
+            visibleOrGone="@{viewModel.uiModel.emptyErrorVisible}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/offset_8"
+            android:onClick="@{() -> viewModel.refresh()}"
+            android:text="@string/retry" />
+
+    </FrameLayout>
+</layout>

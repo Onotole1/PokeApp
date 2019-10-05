@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">PokeApp</string>
+    <string name="retry">Retry</string>
+    <string name="connection_error">Connection error</string>
+    <string name="no_disk_space_error">No disk space</string>
+    <string name="item_pokemon_content_description">Pokemon</string>
+</resources>
