@@ -7,6 +7,8 @@ import com.spitchenko.pokeapp.component.messaging.Message
 interface State<T> {
 
     @CallSuper
+    fun retry() = debug("retry. State: ${this::class.java.simpleName}")
+    @CallSuper
     fun refresh() = debug("refresh. State: ${this::class.java.simpleName}")
     @CallSuper
     fun showNextPage() = debug("showNextPage. State: ${this::class.java.simpleName}")

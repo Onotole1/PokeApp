@@ -11,7 +11,5 @@ class MutablePagingUiModel<T> : PagingUiModel<T> {
     override val emptyText = MutableLiveData<Message?>(null)
     override val dataVisible = MutableLiveData(false)
     override val data = MutableLiveData<List<T>>(emptyList())
-    override val errorMessage = MutableLiveData<Message?>(null)
     override val refreshProgressVisible = MutableLiveData(false)
-    override val pageErrorVisible = MutableLiveData(false)
 }

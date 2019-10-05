@@ -11,7 +11,5 @@ interface PagingUiModel<T> {
     val emptyText: LiveData<Message?>
     val dataVisible: LiveData<Boolean>
     val data: LiveData<List<T>>
-    val errorMessage: LiveData<Message?>
     val refreshProgressVisible: LiveData<Boolean>
-    val pageErrorVisible: LiveData<Boolean>
 }

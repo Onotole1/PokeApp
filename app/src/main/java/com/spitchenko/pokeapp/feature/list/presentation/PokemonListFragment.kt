@@ -8,9 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.spitchenko.pokeapp.component.extensions.getViewModel
-import com.spitchenko.pokeapp.databinding.ItemPokemonBinding
+import com.spitchenko.pokeapp.component.extensions.showMessage
 import com.spitchenko.pokeapp.databinding.PokemonListFragmentBinding
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BinderAdapter
 import javax.inject.Inject
 
 class PokemonListFragment @Inject constructor(
@@ -25,18 +24,24 @@ class PokemonListFragment @Inject constructor(
 
         val viewModel = getViewModel<PokemonListViewModel>(viewModelFactory)
 
+        val context = requireContext()
+
+        viewModel.messageEvent.observe(viewLifecycleOwner) {
+            context.showMessage(it)
+        }
+
         val binding = PokemonListFragmentBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
         }
 
-        val binderAdapter = BinderAdapter<ItemPokemonBinding>()
+        val pokemonsAdapter = PokemonsAdapter(viewModel)
 
         binding.pokemonsList.apply {
-            adapter = binderAdapter
+            adapter = pokemonsAdapter
 
             addItemDecoration(
                 DividerItemDecoration(
-                    requireContext(),
+                    context,
                     DividerItemDecoration.VERTICAL
                 )
             )

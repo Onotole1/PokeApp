@@ -1,7 +1,10 @@
 package com.spitchenko.pokeapp.component.paging
 
 import com.spitchenko.pokeapp.component.extensions.*
+import com.spitchenko.pokeapp.component.lifecycle.MutableSingleLiveEvent
+import com.spitchenko.pokeapp.component.lifecycle.SingleLiveEvent
 import com.spitchenko.pokeapp.component.messaging.Message
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -13,6 +16,9 @@ class ListViewModelDelegate<T>(
     private val paginator: Paginator<T>
 ) : CoroutineScope, ListViewModel<T> {
 
+    private val _messageEvent = MutableSingleLiveEvent<Message>()
+    override val messageEvent: SingleLiveEvent<Message>
+        get() = _messageEvent
     private val _uiModel = MutablePagingUiModel<T>()
     override val uiModel: PagingUiModel<T>
         get() = _uiModel
@@ -25,22 +31,18 @@ class ListViewModelDelegate<T>(
 
     override fun refresh(): Unit = currentState.refresh()
 
+    override fun retry(): Unit = currentState.retry()
+
     private inner class Empty : State<T> {
 
-        override fun refresh() {
-            super.refresh()
+        override fun showNextPage() {
+            super.showNextPage()
 
             currentState = EmptyProgress()
 
             _uiModel.emptyProgressVisible.value = true
 
             startLoading()
-        }
-
-        override fun showNextPage() {
-          super.showNextPage()
-
-            refresh()
         }
     }
 
@@ -139,7 +141,7 @@ class ListViewModelDelegate<T>(
 
             currentState = PageProgress()
 
-            _uiModel.data.add(paginator.progressItem)
+            _uiModel.data.add(paginator.progressItem())
 
             startLoading()
         }
@@ -153,21 +155,22 @@ class ListViewModelDelegate<T>(
             currentState = Refresh()
 
             with(_uiModel) {
-                pageErrorVisible.value = false
+                data.removeLast()
                 refreshProgressVisible.value = true
             }
 
             refreshLoading()
         }
 
-        override fun showNextPage() {
-            super.showNextPage()
+        override fun retry() {
+            super.retry()
 
             currentState = PageProgress()
 
             with(_uiModel) {
-                data.add(paginator.progressItem)
-                pageErrorVisible.value = false
+                data.transaction {
+                    set(lastIndex, paginator.progressItem())
+                }
             }
 
             startLoading()
@@ -213,8 +216,9 @@ class ListViewModelDelegate<T>(
 
             with(_uiModel) {
                 refreshProgressVisible.value = false
-                errorMessage.value = message
             }
+
+            _messageEvent.sendEvent(message)
         }
     }
 
@@ -259,9 +263,9 @@ class ListViewModelDelegate<T>(
             currentState = PageError()
 
             with(_uiModel) {
-                data.removeLast()
-                errorMessage.value = message
-                pageErrorVisible.value = true
+                data.transaction {
+                    set(lastIndex, paginator.errorItem(message))
+                }
             }
         }
     }
@@ -288,6 +292,8 @@ class ListViewModelDelegate<T>(
                 val nextPage = paginator.getNextPage(listSize)
 
                 currentState.newData(nextPage)
+            } catch (exception: CancellationException) {
+                throw exception
             } catch (throwable: Throwable) {
                 fail(throwable)
             }
@@ -301,6 +307,8 @@ class ListViewModelDelegate<T>(
                 val newPage = paginator.resetPagingAndGetFirstPage()
                 _uiModel.data.clear()
                 currentState.newData(newPage)
+            } catch (cancellationException: CancellationException) {
+                throw cancellationException
             } catch (throwable: Throwable) {
                 fail(throwable)
             }
