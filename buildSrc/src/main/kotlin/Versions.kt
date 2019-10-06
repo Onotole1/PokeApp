@@ -2,13 +2,13 @@ object Versions {
 
 	const val MAX_API = 28
 	const val MIN_API = 21
-	const val VERSION_NAME = "2.4.1"
-	const val VERSION_CODE = 15
+	const val VERSION_NAME = "0.0.1"
+	const val VERSION_CODE = 1
 	const val BUILD_TOOLS_VERSION = "28.0.3"
 
 	const val KOTLIN = "1.3.50"
 	const val KOTLINX_SERIALIZATION_RUNTIME = "0.11.0"
-	const val GRADLE = "3.5.0"
+	const val GRADLE = "3.5.1"
 
 	const val ANDROIDX_CORE = "1.0.2"
 	const val CONSTRAINT_LAYOUT = "1.1.3"
