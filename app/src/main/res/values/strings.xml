@@ -3,6 +3,12 @@
     <string name="retry">Retry</string>
     <string name="connection_error">Connection error</string>
     <string name="no_disk_space_error">No disk space</string>
-    <string name="item_pokemon_content_description">Pokemon</string>
+    <string name="pokemon_content_description">Pokemon</string>
     <string name="item_pokemon_info_about_error_description">Info about error</string>
+    <string name="pokemon_details_attack">Attack: %d</string>
+    <string name="pokemon_details_defense">Defense: %d</string>
+    <string name="pokemon_details_health">Health: %d</string>
+    <string name="pokemon_details_height">Height: %d cm</string>
+    <string name="pokemon_details_weight">Weight: %d kg</string>
+    <string name="pokemon_details_type">Type: %s</string>
 </resources>

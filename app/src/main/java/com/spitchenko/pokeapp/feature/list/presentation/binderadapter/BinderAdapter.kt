@@ -1,12 +1,13 @@
 package com.spitchenko.pokeapp.feature.list.presentation.binderadapter
 
 import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 class BinderAdapter(
-	private val viewHolderFabric: Map<Int, (parent: ViewGroup, adapter: BinderAdapter) -> BindingViewHolder> = emptyMap()
-): RecyclerView.Adapter<BindingViewHolder>() {
+    private val viewHolderFabric: Map<Int, (parent: ViewGroup, adapter: BinderAdapter) -> BindingViewHolder<ViewDataBinding>> = emptyMap()
+) : RecyclerView.Adapter<BindingViewHolder<ViewDataBinding>>() {
 
 	var itemList: List<BindingClass> = emptyList()
 		private set
@@ -15,7 +16,10 @@ class BinderAdapter(
 
 	override fun getItemViewType(position: Int): Int = itemList.getOrNull(position)?.layoutId ?: super.getItemViewType(position)
 
-	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder =
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BindingViewHolder<ViewDataBinding> =
 		viewHolderFabric[viewType]?.invoke(parent, this) ?: BindingViewHolder(parent, viewType)
 
 	fun setItems(diffResult: DiffUtil.DiffResult, items: List<BindingClass>) {
@@ -23,9 +27,9 @@ class BinderAdapter(
 		diffResult.dispatchUpdatesTo(this)
 	}
 
-	override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BindingViewHolder<ViewDataBinding>, position: Int) {
 		val model = itemList.getOrNull(position) ?: return
-		model.bind(holder.binding)
+        model.bind(holder.binding, position)
 		holder.binding.executePendingBindings()
 	}
 }

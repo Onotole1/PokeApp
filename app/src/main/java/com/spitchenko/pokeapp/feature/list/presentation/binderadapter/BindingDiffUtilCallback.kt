@@ -1,7 +1,6 @@
 package com.spitchenko.pokeapp.feature.list.presentation.binderadapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BindingClass
 
 open class BindingDiffUtilCallback(
     private val oldItems: List<BindingClass>,
@@ -19,4 +18,19 @@ open class BindingDiffUtilCallback(
 	override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
 		return oldItems[oldItemPosition].areContentsTheSame(newItems[newItemPosition])
 	}
+
+    override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
+        val oldItem = oldItems[oldItemPosition]
+        val newItem = newItems[newItemPosition]
+
+        return Change(
+            oldItem,
+            newItem
+        )
+    }
+
+    data class Change(
+        val oldItem: BindingClass,
+        val newItem: BindingClass
+    )
 }

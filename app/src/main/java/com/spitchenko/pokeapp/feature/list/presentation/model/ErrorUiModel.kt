@@ -16,7 +16,7 @@ data class ErrorUiModel(private val message: Message): BindingClass {
 
     override fun areContentsTheSame(other: BindingClass): Boolean = other is ErrorUiModel
 
-    override fun bind(viewDataBinding: ViewDataBinding) {
+    override fun bind(viewDataBinding: ViewDataBinding, position: Int) {
         viewDataBinding.setVariable(BR.errorText, message)
     }
 }

@@ -14,5 +14,5 @@ class ProgressUiModel(
 
     override fun areContentsTheSame(other: BindingClass): Boolean = other is ProgressUiModel
 
-    override fun bind(viewDataBinding: ViewDataBinding) = Unit
+    override fun bind(viewDataBinding: ViewDataBinding, position: Int) = Unit
 }

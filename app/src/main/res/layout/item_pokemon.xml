@@ -32,6 +32,10 @@
         <variable
             name="errorMessage"
             type="Message" />
+
+        <variable
+            name="transitionName"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,7 +51,8 @@
             imageUrl="@{imageUrl}"
             android:layout_width="@dimen/item_pokemon_image_size"
             android:layout_height="@dimen/item_pokemon_image_size"
-            android:contentDescription="@string/item_pokemon_content_description"
+            android:contentDescription="@string/pokemon_content_description"
+            android:transitionName="@{transitionName}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -55,12 +60,11 @@
 
         <ProgressBar
             visibleOrGone="@{progress}"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/item_pokemon_image"
-            app:layout_constraintEnd_toEndOf="@id/item_pokemon_image"
-            app:layout_constraintStart_toStartOf="@id/item_pokemon_image"
-            app:layout_constraintTop_toTopOf="@id/item_pokemon_image" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:layout_width="0dp"

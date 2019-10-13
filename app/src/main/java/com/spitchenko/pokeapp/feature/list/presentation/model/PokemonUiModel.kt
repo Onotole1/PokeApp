@@ -5,6 +5,8 @@ import com.spitchenko.pokeapp.BR
 import com.spitchenko.pokeapp.R
 import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BindingClass
 
+private const val TRANSITION_NAME = "PokemonImageTransition"
+
 data class PokemonUiModel(val pokemonState: PokemonState): BindingClass {
 
     override val layoutId: Int = R.layout.item_pokemon
@@ -20,8 +22,9 @@ data class PokemonUiModel(val pokemonState: PokemonState): BindingClass {
         return other.pokemonState == pokemonState
     }
 
-    override fun bind(viewDataBinding: ViewDataBinding) {
+    override fun bind(viewDataBinding: ViewDataBinding, position: Int) {
         viewDataBinding.setVariable(BR.name, pokemonState.name)
+        viewDataBinding.setVariable(BR.transitionName, TRANSITION_NAME + position)
         when (pokemonState) {
             is PokemonState.Data -> {
                 viewDataBinding.setVariable(BR.success, true)
@@ -34,6 +37,7 @@ data class PokemonUiModel(val pokemonState: PokemonState): BindingClass {
                 viewDataBinding.setVariable(BR.success, false)
                 viewDataBinding.setVariable(BR.progress, true)
                 viewDataBinding.setVariable(BR.error, false)
+                viewDataBinding.setVariable(BR.imageUrl, null)
             }
 
             is PokemonState.Error -> {
@@ -41,6 +45,7 @@ data class PokemonUiModel(val pokemonState: PokemonState): BindingClass {
                 viewDataBinding.setVariable(BR.progress, false)
                 viewDataBinding.setVariable(BR.error, true)
                 viewDataBinding.setVariable(BR.errorMessage, pokemonState.message)
+                viewDataBinding.setVariable(BR.imageUrl, null)
             }
         }
     }

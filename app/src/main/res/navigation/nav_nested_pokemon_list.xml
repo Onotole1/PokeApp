@@ -1,13 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/nav_nested_pokemon_list"
-	app:startDestination="@id/pokemonListFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_nested_pokemon_list"
+    app:startDestination="@id/pokemonListFragment">
 
-	<fragment
-		android:id="@+id/pokemonListFragment"
-		android:name="com.spitchenko.pokeapp.feature.list.presentation.PokemonListFragment"
-		tools:layout="@layout/pokemon_list_fragment"/>
+    <fragment
+        android:id="@+id/pokemonListFragment"
+        android:name="com.spitchenko.pokeapp.feature.list.presentation.PokemonListFragment"
+        tools:layout="@layout/pokemon_list_fragment">
+        <action
+            android:id="@+id/action_pokemonListFragment_to_pokemonDetailsFragment"
+            app:destination="@id/pokemonDetailsFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/pokemonDetailsFragment"
+        android:name="com.spitchenko.pokeapp.feature.details.presentation.PokemonDetailsFragment"
+        android:label="PokemonDetailsFragment"
+        tools:layout="@layout/pokemon_details_fragment">
 
+        <argument
+            android:name="pokemonDetails"
+            app:argType="com.spitchenko.pokeapp.feature.list.presentation.model.PokemonDetailsParcel" />
+
+        <argument
+            android:name="transitionName"
+            app:argType="string" />
+    </fragment>
 </navigation>

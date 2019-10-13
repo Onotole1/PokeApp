@@ -12,5 +12,5 @@ interface BindingClass {
 
 	fun areItemsTheSame(other: BindingClass): Boolean = other.itemId == itemId
 
-	fun bind(viewDataBinding: ViewDataBinding)
+    fun bind(viewDataBinding: ViewDataBinding, position: Int)
 }
