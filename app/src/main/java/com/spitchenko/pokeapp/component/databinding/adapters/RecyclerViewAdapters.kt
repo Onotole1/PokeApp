@@ -31,7 +31,7 @@ fun RecyclerView.setOnScrolledToFooter(action: () -> Unit) {
 
 @BindingAdapter(value = ["bindingList", "detectMoves"], requireAll = false)
 fun RecyclerView.setBindingList(bindingList: List<BindingClass>?, detectMoves: Boolean?) {
-    val bindingAdapter = adapter as? BinderAdapter<*> ?: return
+    val bindingAdapter = adapter as? BinderAdapter ?: return
 
     val newOrEmptyList = bindingList.orEmpty()
 

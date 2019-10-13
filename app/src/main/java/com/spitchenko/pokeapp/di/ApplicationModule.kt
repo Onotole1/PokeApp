@@ -11,7 +11,6 @@ import dagger.android.support.AndroidSupportInjectionModule
 @Module(
 	includes = [
 		NetworkModule::class,
-		PicassoModule::class,
 		PokemonListDataModule::class,
 		AndroidSupportInjectionModule::class
 	]

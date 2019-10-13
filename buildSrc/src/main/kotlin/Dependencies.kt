@@ -55,7 +55,11 @@ object Dependencies {
 			const val UI = "androidx.navigation:navigation-ui-ktx:${Versions.NAVIGATION}"
 		}
 
-		const val PICASSO = "com.squareup.picasso:picasso:${Versions.PICASSO}"
+		object Glide {
+
+			const val GLIDE = "com.github.bumptech.glide:glide:${Versions.GLIDE}"
+			const val COMPILER = "com.github.bumptech.glide:compiler:${Versions.GLIDE}"
+		}
 		const val GSON = "com.google.code.gson:gson:${Versions.GSON}"
 
 		object OkHttp {
@@ -63,14 +67,12 @@ object Dependencies {
 			const val OKHTTP = "com.squareup.okhttp3:okhttp:${Versions.OK_HTTP}"
 			const val LOGGING = "com.squareup.okhttp3:logging-interceptor:${Versions.OK_HTTP}"
 			const val URLCONNECTION = "com.squareup.okhttp3:okhttp-urlconnection:${Versions.OK_HTTP}"
-			const val DOWNLOADER = "com.jakewharton.picasso:picasso2-okhttp3-downloader:${Versions.OK_HTTP_DOWNLOADER}"
 		}
 
 		object Retrofit {
 
 			const val RETROFIT = "com.squareup.retrofit2:retrofit:${Versions.RETROFIT}"
 			const val GSON_CONVERTER = "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT}"
-			const val RX_JAVA_2_ADAPTER = "com.squareup.retrofit2:adapter-rxjava2:${Versions.RETROFIT}"
 		}
 
 		const val TIMBER = "com.jakewharton.timber:timber:${Versions.TIMBER}"

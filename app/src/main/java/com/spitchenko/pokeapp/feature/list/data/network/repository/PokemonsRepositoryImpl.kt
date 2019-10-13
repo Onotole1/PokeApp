@@ -1,7 +1,7 @@
-package com.spitchenko.pokeapp.feature.list.data
+package com.spitchenko.pokeapp.feature.list.data.network.repository
 
 import com.spitchenko.pokeapp.feature.list.data.network.PokemonsNetworkConverter
-import com.spitchenko.pokeapp.feature.list.data.network.PokemonsNetworkDataSource
+import com.spitchenko.pokeapp.feature.list.data.network.datasource.PokemonsNetworkDataSource
 import com.spitchenko.pokeapp.feature.list.domain.model.Pokemon
 import com.spitchenko.pokeapp.feature.list.domain.usecase.PokemonsRepository
 import javax.inject.Inject

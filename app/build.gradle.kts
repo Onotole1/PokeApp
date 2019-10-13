@@ -64,7 +64,7 @@ dependencies {
 	room()
 	coroutines()
 	navigation()
-	picasso()
+	glide()
 	gson()
 	okhttp()
 	retrofit()

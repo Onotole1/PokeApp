@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="button_animated_selector_default_scale" translatable="false">1</string>
+	<string name="button_animated_selector_pressed_scale" translatable="false">2</string>
+</resources>

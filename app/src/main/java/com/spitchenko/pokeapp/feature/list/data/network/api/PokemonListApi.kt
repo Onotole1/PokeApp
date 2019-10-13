@@ -1,4 +1,4 @@
-package com.spitchenko.pokeapp.feature.list.data.network
+package com.spitchenko.pokeapp.feature.list.data.network.api
 
 import com.spitchenko.pokeapp.feature.list.data.network.model.PokemonsListNetworkDto
 import retrofit2.http.GET

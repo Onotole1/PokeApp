@@ -4,7 +4,7 @@ import androidx.annotation.CallSuper
 import com.spitchenko.pokeapp.component.log.debug
 import com.spitchenko.pokeapp.component.messaging.Message
 
-interface State<T> {
+interface PagingState<T> {
 
     @CallSuper
     fun retry() = debug("retry. State: ${this::class.java.simpleName}")

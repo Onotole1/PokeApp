@@ -46,8 +46,9 @@ fun DependencyHandler.lifecycle() {
 	add(IMPLEMENTATION, Dependencies.Main.Lifecycle.EXTENSIONS)
 }
 
-fun DependencyHandler.picasso() {
-	add(IMPLEMENTATION, Dependencies.Main.PICASSO)
+fun DependencyHandler.glide() {
+	add(IMPLEMENTATION, Dependencies.Main.Glide.GLIDE)
+	add(KAPT, Dependencies.Main.Glide.COMPILER)
 }
 
 fun DependencyHandler.gson() {
@@ -56,14 +57,12 @@ fun DependencyHandler.gson() {
 
 fun DependencyHandler.okhttp() {
 	add(IMPLEMENTATION, Dependencies.Main.OkHttp.LOGGING)
-	add(IMPLEMENTATION, Dependencies.Main.OkHttp.DOWNLOADER)
 	add(IMPLEMENTATION, Dependencies.Main.OkHttp.URLCONNECTION)
 	add(IMPLEMENTATION, Dependencies.Main.OkHttp.OKHTTP)
 }
 
 fun DependencyHandler.retrofit() {
 	add(IMPLEMENTATION, Dependencies.Main.Retrofit.RETROFIT)
-	add(IMPLEMENTATION, Dependencies.Main.Retrofit.RX_JAVA_2_ADAPTER)
 	add(IMPLEMENTATION, Dependencies.Main.Retrofit.GSON_CONVERTER)
 }
 

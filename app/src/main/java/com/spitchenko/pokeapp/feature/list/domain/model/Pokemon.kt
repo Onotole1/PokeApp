@@ -1,6 +1,5 @@
 package com.spitchenko.pokeapp.feature.list.domain.model
 
 data class Pokemon(
-    val name: String,
-    val image: String
+    val name: String
 )

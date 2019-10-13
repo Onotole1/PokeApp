@@ -23,7 +23,7 @@ object Versions {
 	const val MOCKITO_KOTLIN = "2.1.0"
 	const val TRUTH = "0.44"
 
-	const val PICASSO = "2.5.2"
+	const val GLIDE = "4.10.0"
 
 	const val LEAKCANARY = "2.0-beta-3"
 

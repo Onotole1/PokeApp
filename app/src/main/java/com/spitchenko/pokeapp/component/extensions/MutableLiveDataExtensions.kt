@@ -36,3 +36,9 @@ inline fun <T> MutableLiveData<List<T>>.transaction(action: MutableList<T>.() ->
         action()
     }
 }
+
+fun <T> MutableLiveData<List<T>>.set(index: Int, newItem: T) {
+    value = value.orEmpty().toMutableList().apply {
+        set(index, newItem)
+    }
+}

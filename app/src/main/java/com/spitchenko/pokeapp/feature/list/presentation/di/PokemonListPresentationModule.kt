@@ -2,14 +2,11 @@ package com.spitchenko.pokeapp.feature.list.presentation.di
 
 import androidx.lifecycle.ViewModelProvider
 import com.spitchenko.pokeapp.component.lifecycle.ViewModelFactory
-import com.spitchenko.pokeapp.component.paging.ListViewModelDelegate
+import com.spitchenko.pokeapp.feature.list.domain.usecase.GetPokemonDetailsUseCase
 import com.spitchenko.pokeapp.feature.list.domain.usecase.GetPokemonsUseCase
 import com.spitchenko.pokeapp.feature.list.domain.usecase.RefreshPokemonsUseCase
 import com.spitchenko.pokeapp.feature.list.presentation.PokemonListViewModel
-import com.spitchenko.pokeapp.feature.list.presentation.PokemonUiConverterImpl
 import com.spitchenko.pokeapp.feature.list.presentation.paging.PAGE_SIZE
-import com.spitchenko.pokeapp.feature.list.presentation.paging.PokemonsPaginator
-import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.Dispatchers
@@ -22,26 +19,20 @@ class PokemonListPresentationModule {
     fun providePokemonListViewModelFactory(
         getPokemonsUseCase: GetPokemonsUseCase,
         refreshPokemonsUseCase: RefreshPokemonsUseCase,
-        picasso: Picasso
+        pokemonDetailsUseCase: GetPokemonDetailsUseCase
     ): ViewModelProvider.Factory {
-
-        val paginator = PokemonsPaginator(
-            refreshPokemonsUseCase,
-            getPokemonsUseCase,
-            PokemonUiConverterImpl(picasso)
-        )
-
         val viewModelJob = SupervisorJob()
         val coroutineContext = Dispatchers.Main + viewModelJob
 
-        val delegate = ListViewModelDelegate(
-            coroutineContext = coroutineContext,
-            pageSize = PAGE_SIZE,
-            paginator = paginator
-        )
-
         return ViewModelFactory {
-            PokemonListViewModel(viewModelJob, delegate).also {
+            PokemonListViewModel(
+                getPokemonsUseCase,
+                refreshPokemonsUseCase,
+                pokemonDetailsUseCase,
+                coroutineContext,
+                PAGE_SIZE,
+                viewModelJob
+            ).also {
                 it.showNextPage()
             }
         }

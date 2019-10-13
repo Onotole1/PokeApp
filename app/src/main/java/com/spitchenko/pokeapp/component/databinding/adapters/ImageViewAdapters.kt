@@ -1,16 +1,27 @@
 package com.spitchenko.pokeapp.component.databinding.adapters
 
 import android.widget.ImageView
-import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
-import com.spitchenko.pokeapp.component.extensions.load
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.request.RequestOptions
+import com.spitchenko.pokeapp.component.glide.GlideApp
 
-@BindingAdapter("load", "placeholder", "picasso", requireAll = true)
-fun ImageView.setLoad(url: String, @DrawableRes placeholder: Int, picasso: Picasso) {
-    if (url.isNotBlank()) {
-        load(url, placeholder, picasso)
-    } else {
-        setImageResource(placeholder)
-    }
+@BindingAdapter(
+    value = [
+        "imageUrl",
+        "imagePlaceholder"
+    ],
+    requireAll = false
+)
+fun ImageView.setImageGlide(
+    imageUrl: String?,
+    imagePlaceholder: Int?
+) {
+
+    val requestOptions = RequestOptions.centerCropTransform()
+        .placeholder(imagePlaceholder ?: 0)
+
+    GlideApp.with(this)
+        .load(imageUrl)
+        .apply(requestOptions)
+        .into(this)
 }

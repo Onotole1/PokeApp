@@ -1,5 +1,6 @@
-package com.spitchenko.pokeapp.feature.list.data.network
+package com.spitchenko.pokeapp.feature.list.data.network.datasource
 
+import com.spitchenko.pokeapp.feature.list.data.network.api.PokemonListApi
 import com.spitchenko.pokeapp.feature.list.data.network.model.PokemonsListNetworkDto
 import javax.inject.Inject
 
