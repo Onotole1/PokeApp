@@ -27,7 +27,7 @@ object Versions {
 
 	const val LEAKCANARY = "2.0-beta-3"
 
-	const val ROOM = "2.2.0-rc01"
+	const val ROOM = "2.2.1"
 
 	const val NAVIGATION_SAFE_ARGS_PLUGIN = "1.0.0"
 

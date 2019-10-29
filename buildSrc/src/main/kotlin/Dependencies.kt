@@ -46,7 +46,7 @@ object Dependencies {
 
 			const val RUNTIME = "androidx.room:room-runtime:${Versions.ROOM}"
 			const val COMPILER = "androidx.room:room-compiler:${Versions.ROOM}"
-			const val RX_JAVA2 = "androidx.room:room-rxjava2:${Versions.ROOM}"
+			const val COROUTINES = "androidx.room:room-ktx:${Versions.ROOM}"
 		}
 
 		object Navigation {

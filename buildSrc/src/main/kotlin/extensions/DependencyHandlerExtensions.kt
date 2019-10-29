@@ -33,7 +33,7 @@ fun DependencyHandler.dagger() {
 fun DependencyHandler.room() {
 	add(KAPT, Dependencies.Main.Room.COMPILER)
 	add(IMPLEMENTATION, Dependencies.Main.Room.RUNTIME)
-	add(IMPLEMENTATION, Dependencies.Main.Room.RX_JAVA2)
+	add(IMPLEMENTATION, Dependencies.Main.Room.COROUTINES)
 }
 
 fun DependencyHandler.navigation() {
