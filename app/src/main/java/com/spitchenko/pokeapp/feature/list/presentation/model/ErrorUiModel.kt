@@ -1,22 +1,20 @@
 package com.spitchenko.pokeapp.feature.list.presentation.model
 
-import androidx.databinding.ViewDataBinding
-import com.spitchenko.pokeapp.BR
 import com.spitchenko.pokeapp.R
 import com.spitchenko.pokeapp.component.messaging.Message
 import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BindingClass
+import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.ViewType
+import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.ViewTypeOwner
 
 private const val DEFAULT_ID = 9054434L
 
-data class ErrorUiModel(private val message: Message): BindingClass {
+data class ErrorUiModel(
+    val message: Message
+): BindingClass, ViewTypeOwner by ErrorUiModel {
 
     override val itemId: Long = DEFAULT_ID
 
-    override val layoutId: Int = R.layout.item_error
-
-    override fun areContentsTheSame(other: BindingClass): Boolean = other is ErrorUiModel
-
-    override fun bind(viewDataBinding: ViewDataBinding, position: Int) {
-        viewDataBinding.setVariable(BR.errorText, message)
+    companion object: ViewTypeOwner {
+        override val viewType: ViewType = ViewType(R.layout.item_error)
     }
 }

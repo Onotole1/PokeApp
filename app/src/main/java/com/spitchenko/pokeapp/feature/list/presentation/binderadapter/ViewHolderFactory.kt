@@ -1,14 +1,13 @@
 package com.spitchenko.pokeapp.feature.list.presentation.binderadapter
 
 import android.view.ViewGroup
-import androidx.databinding.ViewDataBinding
+import androidx.viewbinding.ViewBinding
 
 
 interface ViewHolderFactory {
 
     fun create(
         parent: ViewGroup,
-        layoutId: LayoutId,
         adapter: BinderAdapter
-    ): BindingViewHolder<ViewDataBinding>
+    ): BindingViewHolder<ViewBinding>
 }

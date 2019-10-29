@@ -1,57 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <data>
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <import type="com.spitchenko.pokeapp.R" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        <import type="com.spitchenko.pokeapp.feature.details.presentation.PokemonDetailsViewModel" />
+            <ImageView
+                android:id="@+id/header_image"
+                android:layout_width="@dimen/offset_48"
+                android:layout_height="@dimen/offset_48"
+                android:contentDescription="@string/pokemon_content_description"
+                tools:src="@tools:sample/avatars" />
 
-        <variable
-            name="viewModel"
-            type="PokemonDetailsViewModel" />
-    </data>
+        </androidx.appcompat.widget.Toolbar>
 
-    <LinearLayout
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pokemon_details_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_pokemon_detail" />
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:title="@{viewModel.uiModel.name}">
-
-                <ImageView
-                    android:id="@+id/header_image"
-                    imagePlaceholder="@{R.drawable.ic_pokeball_pokemon}"
-                    imageUrl="@{viewModel.uiModel.imageUrl}"
-                    android:layout_width="@dimen/offset_48"
-                    android:layout_height="@dimen/offset_48"
-                    android:contentDescription="@string/pokemon_content_description"
-                    tools:src="@tools:sample/avatars" />
-
-            </androidx.appcompat.widget.Toolbar>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/pokemon_details_list"
-            bindingList="@{viewModel.uiModel.details}"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:scrollbars="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_pokemon_detail" />
-
-    </LinearLayout>
-</layout>
+</LinearLayout>

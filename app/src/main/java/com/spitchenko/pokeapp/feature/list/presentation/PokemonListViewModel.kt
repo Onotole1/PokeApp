@@ -37,8 +37,6 @@ class PokemonListViewModel(
 
     private var pokemons: List<PokemonUiModel> = emptyList()
 
-    private val progressUiModel = ProgressUiModel()
-
     private var loadPageJob: Job? = null
 
     private var currentState: PagingState<PokemonUiModel> = Empty()
@@ -182,7 +180,7 @@ class PokemonListViewModel(
 
             currentState = PageProgress()
 
-            _uiModel.data.add(progressUiModel)
+            _uiModel.data.add(ProgressUiModel)
 
             startLoading()
         }
@@ -210,7 +208,7 @@ class PokemonListViewModel(
 
             with(_uiModel) {
                 data.transaction {
-                    set(lastIndex, progressUiModel)
+                    set(lastIndex, ProgressUiModel)
                 }
             }
 

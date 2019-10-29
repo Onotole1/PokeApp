@@ -1,15 +1,14 @@
 package com.spitchenko.pokeapp.feature.list.presentation.binderadapter
 
 import android.view.ViewGroup
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 
 class BinderAdapter(
-    vararg factories: Pair<LayoutId, ViewHolderFactory>
-) : RecyclerView.Adapter<BindingViewHolder<ViewDataBinding>>() {
-
-    private val factory = mapOf(*factories)
+    private val factory: Map<ViewType, ViewHolderFactory>,
+    private val renders: Map<ViewType, ViewRenderer> = emptyMap()
+) : RecyclerView.Adapter<BindingViewHolder<ViewBinding>>() {
 
     var itemList: List<BindingClass> = emptyList()
         private set
@@ -17,28 +16,22 @@ class BinderAdapter(
     override fun getItemCount(): Int = itemList.size
 
     override fun getItemViewType(position: Int): Int =
-        itemList.getOrNull(position)?.layoutId ?: super.getItemViewType(position)
+        itemList.getOrNull(position)?.viewType?.type ?: super.getItemViewType(position)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): BindingViewHolder<ViewDataBinding> {
-        val layoutId = LayoutId(viewType)
-
-        return factory[layoutId]?.create(parent, layoutId, this) ?: BindingViewHolder(
-            parent,
-            layoutId
-        )
-    }
+    ): BindingViewHolder<ViewBinding> =
+        factory.getValue(ViewType(viewType)).create(parent, this)
 
     fun setItems(diffResult: DiffUtil.DiffResult, items: List<BindingClass>) {
         itemList = items
         diffResult.dispatchUpdatesTo(this)
     }
 
-    override fun onBindViewHolder(holder: BindingViewHolder<ViewDataBinding>, position: Int) {
+    override fun onBindViewHolder(holder: BindingViewHolder<ViewBinding>, position: Int) {
         val model = itemList.getOrNull(position) ?: return
-        model.bind(holder.binding, position)
-        holder.binding.executePendingBindings()
+        val viewType = ViewType(holder.itemViewType)
+        renders[viewType]?.render(model, holder, position)
     }
 }

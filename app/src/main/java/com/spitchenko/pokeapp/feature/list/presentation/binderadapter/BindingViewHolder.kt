@@ -1,18 +1,8 @@
 package com.spitchenko.pokeapp.feature.list.presentation.binderadapter
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 
-class BindingViewHolder<out T : ViewDataBinding>(
-    parent: ViewGroup,
-    layout: LayoutId,
-    val binding: T = DataBindingUtil.inflate(
-        LayoutInflater.from(parent.context),
-        layout.layoutRes,
-        parent,
-        false
-    )
+class BindingViewHolder<out T : ViewBinding>(
+    val binding: T
 ) : RecyclerView.ViewHolder(binding.root)

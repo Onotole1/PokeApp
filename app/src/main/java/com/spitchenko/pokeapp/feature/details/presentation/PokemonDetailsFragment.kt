@@ -1,25 +1,30 @@
 package com.spitchenko.pokeapp.feature.details.presentation
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.transition.TransitionInflater
+import com.spitchenko.pokeapp.R
 import com.spitchenko.pokeapp.component.extensions.getViewModel
 import com.spitchenko.pokeapp.component.extensions.initToolbar
+import com.spitchenko.pokeapp.component.extensions.setBindingList
+import com.spitchenko.pokeapp.component.extensions.setImageGlide
 import com.spitchenko.pokeapp.component.lifecycle.ViewModelFactory
 import com.spitchenko.pokeapp.databinding.PokemonDetailsFragmentBinding
 import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BinderAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 import javax.inject.Inject
 
 class PokemonDetailsFragment @Inject constructor(
-    private val pokemonDetailsUiConverter: PokemonDetailsUiConverter
-) : Fragment() {
+    private val pokemonDetailsUiConverter: PokemonDetailsUiConverter,
+    private val adapter: BinderAdapter
+) : Fragment(R.layout.pokemon_details_fragment), CoroutineScope by MainScope() {
 
-    lateinit var viewModel: PokemonDetailsViewModel
+    private lateinit var viewModel: PokemonDetailsViewModel
 
     lateinit var args: PokemonDetailsFragmentArgs
 
@@ -39,16 +44,10 @@ class PokemonDetailsFragment @Inject constructor(
         })
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val binding = PokemonDetailsFragmentBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val binding = PokemonDetailsFragmentBinding.bind(view)
 
-        binding.viewModel = viewModel
-
-        binding.pokemonDetailsList.adapter = BinderAdapter()
+        binding.pokemonDetailsList.adapter = adapter
 
         binding.pokemonDetailsList.addItemDecoration(
             DividerItemDecoration(
@@ -61,6 +60,21 @@ class PokemonDetailsFragment @Inject constructor(
 
         binding.toolbar.initToolbar(findNavController())
 
-        return binding.root
+        binding.pokemonDetailsList.setBindingList(viewModel.uiModel.details)
+
+        binding.headerImage.setImageGlide(
+            args.pokemonDetails.details.image?.url,
+            R.drawable.ic_pokeball_pokemon
+        )
+
+        binding.headerImage.transitionName = args.transitionName
+
+        binding.toolbar.title = args.pokemonDetails.details.name
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        cancel()
     }
 }

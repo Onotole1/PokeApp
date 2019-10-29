@@ -1,16 +1,11 @@
 package com.spitchenko.pokeapp.feature.list.presentation.binderadapter
 
-import androidx.databinding.ViewDataBinding
+interface BindingClass: ViewTypeOwner {
 
-interface BindingClass {
+    val itemId: Long
+        get() = hashCode().toLong()
 
-	val layoutId: Int
+    fun areContentsTheSame(other: BindingClass): Boolean = equals(other)
 
-	val itemId: Long
-
-	fun areContentsTheSame(other: BindingClass): Boolean
-
-	fun areItemsTheSame(other: BindingClass): Boolean = other.itemId == itemId
-
-    fun bind(viewDataBinding: ViewDataBinding, position: Int)
+    fun areItemsTheSame(other: BindingClass): Boolean = other.itemId == itemId
 }

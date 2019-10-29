@@ -1,107 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ripple_color_primary"
+    android:padding="@dimen/offset_8">
 
-    <data>
+    <ImageView
+        android:id="@+id/item_pokemon_image"
+        android:layout_width="@dimen/item_pokemon_image_size"
+        android:layout_height="@dimen/item_pokemon_image_size"
+        android:contentDescription="@string/pokemon_content_description"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_pokeball_pokemon" />
 
-        <import type="com.spitchenko.pokeapp.R" />
-
-        <import type="com.spitchenko.pokeapp.component.messaging.Message" />
-
-        <variable
-            name="name"
-            type="String" />
-
-        <variable
-            name="imageUrl"
-            type="String" />
-
-        <variable
-            name="progress"
-            type="Boolean" />
-
-        <variable
-            name="error"
-            type="Boolean" />
-
-        <variable
-            name="success"
-            type="Boolean" />
-
-        <variable
-            name="errorMessage"
-            type="Message" />
-
-        <variable
-            name="transitionName"
-            type="String" />
-    </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <ProgressBar
+        android:id="@+id/item_pokemon_progress"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ripple_color_primary"
-        android:clickable="@{success}"
-        android:focusable="@{success}"
-        android:padding="@dimen/offset_8">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/item_pokemon_image"
-            imagePlaceholder="@{R.drawable.ic_pokeball_pokemon}"
-            imageUrl="@{imageUrl}"
-            android:layout_width="@dimen/item_pokemon_image_size"
-            android:layout_height="@dimen/item_pokemon_image_size"
-            android:contentDescription="@string/pokemon_content_description"
-            android:transitionName="@{transitionName}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_pokeball_pokemon" />
+    <TextView
+        android:id="@+id/item_pokemon_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:padding="@dimen/offset_8"
+        app:layout_constraintBottom_toBottomOf="@id/item_pokemon_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/item_pokemon_image"
+        app:layout_constraintTop_toTopOf="@id/item_pokemon_image"
+        tools:drawableEnd="@drawable/ic_chevron_right"
+        tools:text="Пикачу" />
 
-        <ProgressBar
-            visibleOrGone="@{progress}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageButton
+        android:id="@+id/item_pokemon_error_info_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:contentDescription="@string/item_pokemon_info_about_error_description"
+        android:src="@drawable/ic_error_outline_inset_4"
+        android:stateListAnimator="@animator/button_animated_selector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/item_pokemon_retry_button"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@{success ? @drawable/ic_chevron_right : null}"
-            android:maxLines="1"
-            android:padding="@dimen/offset_8"
-            android:text="@{name}"
-            app:layout_constraintBottom_toBottomOf="@id/item_pokemon_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/item_pokemon_image"
-            app:layout_constraintTop_toTopOf="@id/item_pokemon_image"
-            tools:drawableEnd="@drawable/ic_chevron_right"
-            tools:text="Пикачу" />
+    <Button
+        android:id="@+id/item_pokemon_retry_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/retry"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/item_pokemon_error_info_button"
-            visibleOrGone="@{error}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?android:selectableItemBackgroundBorderless"
-            android:contentDescription="@string/item_pokemon_info_about_error_description"
-            android:src="@drawable/ic_error_outline_inset_4"
-            android:stateListAnimator="@animator/button_animated_selector"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/item_pokemon_retry_button"
-            app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/item_pokemon_error_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="item_pokemon_retry_button,item_pokemon_error_info_button"/>
 
-        <Button
-            android:id="@+id/item_pokemon_retry_button"
-            visibleOrGone="@{error}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/retry"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>

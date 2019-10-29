@@ -1,17 +1,9 @@
-package com.spitchenko.pokeapp.component.databinding.adapters
+package com.spitchenko.pokeapp.component.extensions
 
 import android.widget.ImageView
-import androidx.databinding.BindingAdapter
 import com.bumptech.glide.request.RequestOptions
 import com.spitchenko.pokeapp.component.glide.GlideApp
 
-@BindingAdapter(
-    value = [
-        "imageUrl",
-        "imagePlaceholder"
-    ],
-    requireAll = false
-)
 fun ImageView.setImageGlide(
     imageUrl: String?,
     imagePlaceholder: Int?
