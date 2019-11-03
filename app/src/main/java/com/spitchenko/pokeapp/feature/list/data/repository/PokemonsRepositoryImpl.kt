@@ -16,21 +16,7 @@ class PokemonsRepositoryImpl @Inject constructor(
     private val pokemonsNetworkConverter: PokemonsNetworkConverter
 ) : PokemonsRepository {
 
-    override suspend fun getPokemons(pageSize: Int, offset: Int): List<Pokemon> =
-        getPokemonsInternal(pageSize, offset) {
-            pokemonLocalDataSource.savePokemons(it.map(Pokemon::toEntity))
-        }
-
-    override suspend fun refreshAndGetFirstPage(pageSize: Int): List<Pokemon> =
-        getPokemonsInternal(pageSize = pageSize, offset = 0) {
-            pokemonLocalDataSource.clearAndsavePokemons(it.map(Pokemon::toEntity))
-        }
-
-    private suspend inline fun getPokemonsInternal(
-        pageSize: Int,
-        offset: Int,
-        crossinline onNetworkSuccess: suspend (List<Pokemon>) -> Unit
-    ): List<Pokemon> {
+    override suspend fun getPokemons(pageSize: Int, offset: Int): List<Pokemon> {
         val localPokemons = pokemonLocalDataSource.getPokemons(offset.dec(), pageSize)
 
         if (localPokemons.isNotEmpty()) {
@@ -40,7 +26,16 @@ class PokemonsRepositoryImpl @Inject constructor(
         val networkPokemons = networkDataSource.getPokemons(offset = offset, limit = pageSize)
             .let(pokemonsNetworkConverter::convert)
 
-        onNetworkSuccess(networkPokemons)
+        pokemonLocalDataSource.savePokemons(networkPokemons.map(Pokemon::toEntity))
+
+        return networkPokemons
+    }
+
+    override suspend fun refreshAndGetFirstPage(pageSize: Int): List<Pokemon> {
+        val networkPokemons = networkDataSource.getPokemons(offset = 0, limit = pageSize)
+            .let(pokemonsNetworkConverter::convert)
+
+        pokemonLocalDataSource.clearAndsavePokemons(networkPokemons.map(Pokemon::toEntity))
 
         return networkPokemons
     }
