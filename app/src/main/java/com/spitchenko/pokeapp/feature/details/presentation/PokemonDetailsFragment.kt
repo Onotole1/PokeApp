@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.transition.TransitionInflater
 import com.spitchenko.pokeapp.component.extensions.getViewModel
-import com.spitchenko.pokeapp.component.extensions.initToolbar
+import com.spitchenko.pokeapp.component.extensions.initNavigateUpClickListener
 import com.spitchenko.pokeapp.component.lifecycle.ViewModelFactory
 import com.spitchenko.pokeapp.databinding.PokemonDetailsFragmentBinding
 import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BinderAdapter
@@ -59,7 +58,7 @@ class PokemonDetailsFragment @Inject constructor(
 
         binding.headerImage.transitionName = args.transitionName
 
-        binding.toolbar.initToolbar(findNavController())
+        binding.homeButton.initNavigateUpClickListener()
 
         return binding.root
     }

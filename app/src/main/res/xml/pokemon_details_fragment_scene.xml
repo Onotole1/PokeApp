@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        app:constraintSetEnd="@id/collapsed"
+        app:constraintSetStart="@id/expanded">
+
+        <OnSwipe
+            app:dragDirection="dragUp"
+            app:touchAnchorId="@id/pokemon_details_list"
+            app:touchAnchorSide="top" />
+
+        <KeyFrameSet>
+
+            <KeyPosition
+                app:framePosition="50"
+                app:keyPositionType="deltaRelative"
+                app:motionTarget="@id/header_image"
+                app:percentX="0.9" />
+
+            <KeyAttribute
+                android:scaleX="1.01"
+                android:scaleY="1.01"
+                app:framePosition="50"
+                app:motionTarget="@id/title" />
+
+            <KeyPosition
+                app:framePosition="25"
+                app:keyPositionType="deltaRelative"
+                app:motionTarget="@id/header_image"
+                app:percentX="0.6" />
+
+            <KeyAttribute
+                android:scaleX="1.05"
+                android:scaleY="1.05"
+                app:framePosition="25"
+                app:motionTarget="@id/title" />
+
+        </KeyFrameSet>
+
+    </Transition>
+
+    <ConstraintSet android:id="@+id/expanded">
+
+        <Constraint
+            android:id="@id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/offset_112"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
+            android:id="@id/header_image"
+            android:layout_width="@dimen/offset_48"
+            android:layout_height="@dimen/offset_48"
+            android:layout_marginStart="@dimen/offset_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/home" />
+
+        <Constraint
+            android:id="@id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            app:layout_constraintBottom_toBottomOf="@id/header_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/home"
+            app:layout_constraintTop_toTopOf="@id/header_image" />
+
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/collapsed">
+
+        <Constraint
+            android:id="@id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
+            android:id="@id/header_image"
+            android:layout_width="@dimen/offset_48"
+            android:layout_height="@dimen/offset_48"
+            app:layout_constraintBottom_toBottomOf="@id/app_bar"
+            app:layout_constraintStart_toEndOf="@id/home"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
+            android:id="@id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/offset_8"
+            app:layout_constraintBottom_toBottomOf="@id/home"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/header_image"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </ConstraintSet>
+
+</MotionScene>

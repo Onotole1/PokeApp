@@ -11,7 +11,7 @@ object Versions {
 	const val GRADLE = "3.5.1"
 
 	const val ANDROIDX_CORE = "1.0.2"
-	const val CONSTRAINT_LAYOUT = "1.1.3"
+	const val CONSTRAINT_LAYOUT = "2.0.0-beta3"
 	const val RECYCLER_VIEW = "1.0.0"
 	const val MATERIAL = "1.1.0-alpha09"
 	const val SWIPE_REFRESH_LAYOUT = "1.0.0"

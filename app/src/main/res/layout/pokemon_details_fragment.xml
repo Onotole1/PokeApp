@@ -14,44 +14,69 @@
             type="PokemonDetailsViewModel" />
     </data>
 
-    <LinearLayout
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        app:layoutDescription="@xml/pokemon_details_fragment_scene">
 
-        <com.google.android.material.appbar.AppBarLayout
+        <View
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="112dp"
+            android:background="@color/colorPrimary"
+            android:elevation="@dimen/offset_16" />
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:title="@{viewModel.uiModel.name}">
+        <FrameLayout
+            android:id="@+id/home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:elevation="@dimen/offset_16"
+            android:padding="@dimen/offset_16">
 
-                <ImageView
-                    android:id="@+id/header_image"
-                    imagePlaceholder="@{R.drawable.ic_pokeball_pokemon}"
-                    imageUrl="@{viewModel.uiModel.imageUrl}"
-                    android:layout_width="@dimen/offset_48"
-                    android:layout_height="@dimen/offset_48"
-                    android:contentDescription="@string/pokemon_content_description"
-                    tools:src="@tools:sample/avatars" />
+            <ImageButton
+                android:id="@+id/home_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_arrow_back_white_24dp" />
 
-            </androidx.appcompat.widget.Toolbar>
+        </FrameLayout>
 
-        </com.google.android.material.appbar.AppBarLayout>
+        <ImageView
+            android:id="@+id/header_image"
+            imageHeight="@{@dimen/offset_48}"
+            imagePlaceholder="@{R.drawable.ic_pokeball_pokemon}"
+            imageUrl="@{viewModel.uiModel.imageUrl}"
+            imageWidth="@{@dimen/offset_48}"
+            android:layout_width="@dimen/offset_48"
+            android:layout_height="@dimen/offset_48"
+            android:contentDescription="@string/pokemon_content_description"
+            android:elevation="@dimen/offset_16"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/offset_16"
+            android:elevation="@dimen/offset_16"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{viewModel.uiModel.name}"
+            android:textColor="@android:color/white"
+            tools:text="bulbasaur" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/pokemon_details_list"
             bindingList="@{viewModel.uiModel.details}"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:scrollbars="vertical"
+            android:layout_height="0dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar"
             tools:listitem="@layout/item_pokemon_detail" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>
