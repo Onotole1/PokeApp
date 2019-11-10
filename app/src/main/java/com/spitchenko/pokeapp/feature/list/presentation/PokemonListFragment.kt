@@ -6,17 +6,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.spitchenko.pokeapp.R
-import com.spitchenko.pokeapp.component.extensions.*
+import com.spitchenko.pokeapp.component.extensions.getViewModel
+import com.spitchenko.pokeapp.component.extensions.observe
+import com.spitchenko.pokeapp.component.extensions.showMessage
 import com.spitchenko.pokeapp.databinding.PokemonListFragmentBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class PokemonListFragment @Inject constructor(
     private val viewModelFactory: ViewModelProvider.Factory
-) : Fragment(R.layout.pokemon_list_fragment), CoroutineScope by MainScope() {
+) : Fragment(R.layout.pokemon_list_fragment) {
 
     private lateinit var viewModel: PokemonListViewModel
 
@@ -53,9 +51,7 @@ class PokemonListFragment @Inject constructor(
         }
 
         viewModel.uiModel.data.observe(viewLifecycleOwner) {
-            launch {
-                binding.pokemonsList.setBindingList(it)
-            }
+            binding.pokemonsList.setBindingList(it)
         }
 
         viewModel.uiModel.refreshProgressVisible.observe(viewLifecycleOwner) {
@@ -87,11 +83,5 @@ class PokemonListFragment @Inject constructor(
             viewLifecycleOwner,
             binding.emptyMessage::setVisibleOrGone
         )
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        cancel()
     }
 }
