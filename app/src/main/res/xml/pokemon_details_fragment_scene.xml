@@ -46,7 +46,8 @@
         <Constraint
             android:id="@id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/offset_112"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/header_space"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Constraint
@@ -55,18 +56,21 @@
             android:layout_height="@dimen/offset_48"
             android:layout_marginStart="@dimen/offset_16"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home" />
+            app:layout_constraintTop_toBottomOf="@id/home"
+            app:visibilityMode="ignore" />
 
         <Constraint
             android:id="@id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
+            android:layout_marginStart="@dimen/offset_48"
+            app:layout_constraintStart_toEndOf="@id/header_image"
+            app:layout_goneMarginStart="@dimen/offset_56"
             android:scaleX="1.2"
             android:scaleY="1.2"
             app:layout_constraintBottom_toBottomOf="@id/header_image"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/home"
+            app:layout_goneMarginTop="@dimen/offset_48"
             app:layout_constraintTop_toTopOf="@id/header_image" />
 
     </ConstraintSet>
@@ -76,26 +80,27 @@
         <Constraint
             android:id="@id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/home"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Constraint
             android:id="@id/header_image"
             android:layout_width="@dimen/offset_48"
             android:layout_height="@dimen/offset_48"
-            app:layout_constraintBottom_toBottomOf="@id/app_bar"
+            app:layout_constraintBottom_toBottomOf="@id/home"
             app:layout_constraintStart_toEndOf="@id/home"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/home"
+            app:visibilityMode="ignore" />
 
         <Constraint
             android:id="@id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/offset_8"
             app:layout_constraintBottom_toBottomOf="@id/home"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/header_image"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/home" />
 
     </ConstraintSet>
 

@@ -3,10 +3,15 @@ package com.spitchenko.pokeapp.feature.details.presentation
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.transition.TransitionInflater
+import com.spitchenko.pokeapp.R
+import com.spitchenko.pokeapp.component.extensions.doOnApplyWindowInsets
 import com.spitchenko.pokeapp.component.extensions.getViewModel
 import com.spitchenko.pokeapp.component.extensions.initNavigateUpClickListener
 import com.spitchenko.pokeapp.component.lifecycle.ViewModelFactory
@@ -59,6 +64,16 @@ class PokemonDetailsFragment @Inject constructor(
         binding.headerImage.transitionName = args.transitionName
 
         binding.homeButton.initNavigateUpClickListener()
+
+        binding.root.systemUiVisibility =
+            SYSTEM_UI_FLAG_LAYOUT_STABLE or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+
+        binding.home.doOnApplyWindowInsets { windowInsets ->
+            binding.motionLayout.getConstraintSet(R.id.expanded)
+                ?.setMargin(R.id.home, ConstraintSet.TOP, windowInsets.systemWindowInsetTop)
+            binding.motionLayout.getConstraintSet(R.id.collapsed)
+                ?.setMargin(R.id.home, ConstraintSet.TOP, windowInsets.systemWindowInsetTop)
+        }
 
         return binding.root
     }

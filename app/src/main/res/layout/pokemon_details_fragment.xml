@@ -16,6 +16,7 @@
 
 
     <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/motionLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutDescription="@xml/pokemon_details_fragment_scene">
@@ -33,7 +34,9 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:elevation="@dimen/offset_16"
-            android:padding="@dimen/offset_16">
+            android:padding="@dimen/offset_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
                 android:id="@+id/home_button"
@@ -55,6 +58,13 @@
             android:contentDescription="@string/pokemon_content_description"
             android:elevation="@dimen/offset_16"
             tools:src="@tools:sample/avatars" />
+
+        <Space
+            android:id="@+id/header_space"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/offset_8"
+            app:layout_constraintTop_toBottomOf="@id/header_image"
+            app:layout_goneMarginTop="@dimen/offset_48" />
 
         <TextView
             android:id="@+id/title"
