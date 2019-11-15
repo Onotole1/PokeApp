@@ -16,7 +16,10 @@ import com.spitchenko.pokeapp.component.extensions.getViewModel
 import com.spitchenko.pokeapp.component.extensions.initNavigateUpClickListener
 import com.spitchenko.pokeapp.component.lifecycle.ViewModelFactory
 import com.spitchenko.pokeapp.databinding.PokemonDetailsFragmentBinding
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BinderAdapter
+import com.spitchenko.pokeapp.feature.details.presentation.model.PokemonDetailUiModel
+import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.DefaultViewHolderFactory
+import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.LayoutId
+import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.binderAdapterOf
 import javax.inject.Inject
 
 class PokemonDetailsFragment @Inject constructor(
@@ -52,7 +55,9 @@ class PokemonDetailsFragment @Inject constructor(
 
         binding.viewModel = viewModel
 
-        binding.pokemonDetailsList.adapter = BinderAdapter()
+        binding.pokemonDetailsList.adapter = binderAdapterOf(
+            PokemonDetailUiModel::class to DefaultViewHolderFactory(LayoutId(R.layout.item_pokemon_detail))
+        )
 
         binding.pokemonDetailsList.addItemDecoration(
             DividerItemDecoration(

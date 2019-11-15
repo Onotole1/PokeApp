@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 interface PokemonDetailsNetworkConverter {
 
-    fun convert(response: PokemonDetailsNetworkDto): PokemonDetails
+    fun convert(response: PokemonDetailsNetworkDto): Pokemon
 }
 
 private const val ATTACK_STAT = "attack"
@@ -18,7 +18,7 @@ class PokemonDetailsNetworkConverterImpl @Inject constructor(
     private val pictureConverter: PokemonPictureConverter
 ) : PokemonDetailsNetworkConverter {
 
-    override fun convert(response: PokemonDetailsNetworkDto): PokemonDetails {
+    override fun convert(response: PokemonDetailsNetworkDto): Pokemon {
         val attack = Attack(
             getStat(ATTACK_STAT, response.stats)
         )
@@ -35,7 +35,7 @@ class PokemonDetailsNetworkConverterImpl @Inject constructor(
 
         val picture = pictureConverter.convert(response.sprites)
 
-        return PokemonDetails(
+        return Pokemon(
             name = response.name,
             height = Centimeters(response.height),
             weight = Kilograms(response.weight),

@@ -4,9 +4,9 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.spitchenko.pokeapp.feature.list.domain.model.*
 
-data class PokemonDetailsParcel(val details: PokemonDetails) : Parcelable {
+data class PokemonDetailsParcel(val details: Pokemon) : Parcelable {
     constructor(parcel: Parcel) : this(
-        PokemonDetails(
+        Pokemon(
             requireNotNull(parcel.readString()),
             Centimeters(parcel.readInt()),
             Kilograms(parcel.readInt()),
@@ -41,4 +41,4 @@ data class PokemonDetailsParcel(val details: PokemonDetails) : Parcelable {
     }
 }
 
-fun PokemonDetails.toParcel() = PokemonDetailsParcel(this)
+fun Pokemon.toParcel() = PokemonDetailsParcel(this)

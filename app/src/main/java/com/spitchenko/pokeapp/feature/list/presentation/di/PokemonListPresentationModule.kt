@@ -2,7 +2,6 @@ package com.spitchenko.pokeapp.feature.list.presentation.di
 
 import androidx.lifecycle.ViewModelProvider
 import com.spitchenko.pokeapp.component.lifecycle.ViewModelFactory
-import com.spitchenko.pokeapp.feature.list.domain.usecase.GetPokemonDetailsUseCase
 import com.spitchenko.pokeapp.feature.list.domain.usecase.GetPokemonsUseCase
 import com.spitchenko.pokeapp.feature.list.domain.usecase.RefreshPokemonsUseCase
 import com.spitchenko.pokeapp.feature.list.presentation.PokemonListViewModel
@@ -18,8 +17,7 @@ class PokemonListPresentationModule {
     @Provides
     fun providePokemonListViewModelFactory(
         getPokemonsUseCase: GetPokemonsUseCase,
-        refreshPokemonsUseCase: RefreshPokemonsUseCase,
-        pokemonDetailsUseCase: GetPokemonDetailsUseCase
+        refreshPokemonsUseCase: RefreshPokemonsUseCase
     ): ViewModelProvider.Factory {
         val viewModelJob = SupervisorJob()
         val coroutineContext = Dispatchers.Main + viewModelJob
@@ -28,7 +26,6 @@ class PokemonListPresentationModule {
             PokemonListViewModel(
                 getPokemonsUseCase,
                 refreshPokemonsUseCase,
-                pokemonDetailsUseCase,
                 coroutineContext,
                 PAGE_SIZE,
                 viewModelJob

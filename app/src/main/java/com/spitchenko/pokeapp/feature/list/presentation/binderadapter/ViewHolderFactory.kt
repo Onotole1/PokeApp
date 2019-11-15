@@ -6,9 +6,5 @@ import androidx.databinding.ViewDataBinding
 
 interface ViewHolderFactory {
 
-    fun create(
-        parent: ViewGroup,
-        layoutId: LayoutId,
-        adapter: BinderAdapter
-    ): BindingViewHolder<ViewDataBinding>
+    fun create(parent: ViewGroup): BindingViewHolder<ViewDataBinding>
 }

@@ -2,31 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d26911b4e30cf90deffdf2a5c370662b",
+    "identityHash": "9bb0a4e3d9ca5ff618254915bd96125d",
     "entities": [
       {
         "tableName": "pokemon",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, PRIMARY KEY(`name`))",
-        "fields": [
-          {
-            "fieldPath": "name",
-            "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "name"
-          ],
-          "autoGenerate": false
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "pokemon_details",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `height` INTEGER NOT NULL, `weight` INTEGER NOT NULL, `attack` INTEGER NOT NULL, `defense` INTEGER NOT NULL, `health` INTEGER NOT NULL, `type` TEXT NOT NULL, `image` TEXT, PRIMARY KEY(`name`), FOREIGN KEY(`name`) REFERENCES `pokemon`(`name`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `height` INTEGER NOT NULL, `weight` INTEGER NOT NULL, `attack` INTEGER NOT NULL, `defense` INTEGER NOT NULL, `health` INTEGER NOT NULL, `type` TEXT NOT NULL, `image` TEXT, PRIMARY KEY(`name`))",
         "fields": [
           {
             "fieldPath": "name",
@@ -85,33 +65,92 @@
         },
         "indices": [
           {
-            "name": "index_pokemon_details_name",
+            "name": "index_pokemon_name",
             "unique": false,
             "columnNames": [
               "name"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_pokemon_details_name` ON `${TABLE_NAME}` (`name`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_pokemon_name` ON `${TABLE_NAME}` (`name`)"
           }
         ],
-        "foreignKeys": [
+        "foreignKeys": []
+      },
+      {
+        "tableName": "pokemon",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `height` INTEGER NOT NULL, `weight` INTEGER NOT NULL, `attack` INTEGER NOT NULL, `defense` INTEGER NOT NULL, `health` INTEGER NOT NULL, `type` TEXT NOT NULL, `image` TEXT, PRIMARY KEY(`name`))",
+        "fields": [
           {
-            "table": "pokemon",
-            "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
-            "columns": [
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "height",
+            "columnName": "height",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "weight",
+            "columnName": "weight",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "attack",
+            "columnName": "attack",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defense",
+            "columnName": "defense",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "health",
+            "columnName": "health",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "image",
+            "columnName": "image",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_pokemon_name",
+            "unique": false,
+            "columnNames": [
               "name"
             ],
-            "referencedColumns": [
-              "name"
-            ]
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_pokemon_name` ON `${TABLE_NAME}` (`name`)"
           }
-        ]
+        ],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd26911b4e30cf90deffdf2a5c370662b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9bb0a4e3d9ca5ff618254915bd96125d')"
     ]
   }
 }

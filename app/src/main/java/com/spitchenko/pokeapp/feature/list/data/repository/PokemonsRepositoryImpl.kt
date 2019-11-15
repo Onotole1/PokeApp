@@ -4,16 +4,21 @@ import com.spitchenko.pokeapp.feature.list.data.database.datasource.PokemonLocal
 import com.spitchenko.pokeapp.feature.list.data.database.model.PokemonEntity
 import com.spitchenko.pokeapp.feature.list.data.database.toEntity
 import com.spitchenko.pokeapp.feature.list.data.database.toPokemon
-import com.spitchenko.pokeapp.feature.list.data.network.PokemonsNetworkConverter
+import com.spitchenko.pokeapp.feature.list.data.network.PokemonDetailsNetworkConverter
+import com.spitchenko.pokeapp.feature.list.data.network.datasource.PokemonDetailsNetworkDataSource
 import com.spitchenko.pokeapp.feature.list.data.network.datasource.PokemonsNetworkDataSource
+import com.spitchenko.pokeapp.feature.list.data.network.model.PokemonNetworkDto
 import com.spitchenko.pokeapp.feature.list.domain.model.Pokemon
 import com.spitchenko.pokeapp.feature.list.domain.usecase.PokemonsRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
 class PokemonsRepositoryImpl @Inject constructor(
+    private val pokemonDetailsNetworkDataSource: PokemonDetailsNetworkDataSource,
+    private val pokemonDetailsNetworkConverter: PokemonDetailsNetworkConverter,
     private val networkDataSource: PokemonsNetworkDataSource,
-    private val pokemonLocalDataSource: PokemonLocalDataSource,
-    private val pokemonsNetworkConverter: PokemonsNetworkConverter
+    private val pokemonLocalDataSource: PokemonLocalDataSource
 ) : PokemonsRepository {
 
     override suspend fun getPokemons(pageSize: Int, offset: Int): List<Pokemon> {
@@ -23,20 +28,39 @@ class PokemonsRepositoryImpl @Inject constructor(
             return localPokemons.map(PokemonEntity::toPokemon)
         }
 
-        val networkPokemons = networkDataSource.getPokemons(offset = offset, limit = pageSize)
-            .let(pokemonsNetworkConverter::convert)
-
-        pokemonLocalDataSource.savePokemons(networkPokemons.map(Pokemon::toEntity))
-
-        return networkPokemons
+        return loadPokemonsFromNetwork(offset = offset, pageSize = pageSize) {
+            pokemonLocalDataSource.savePokemons(it)
+        }
     }
 
-    override suspend fun refreshAndGetFirstPage(pageSize: Int): List<Pokemon> {
-        val networkPokemons = networkDataSource.getPokemons(offset = 0, limit = pageSize)
-            .let(pokemonsNetworkConverter::convert)
+    override suspend fun refreshAndGetFirstPage(pageSize: Int): List<Pokemon> =
+        loadPokemonsFromNetwork(offset = 0, pageSize = pageSize) {
+            pokemonLocalDataSource.clearAndsavePokemons(it)
+        }
 
-        pokemonLocalDataSource.clearAndsavePokemons(networkPokemons.map(Pokemon::toEntity))
+    private suspend inline fun loadPokemonsFromNetwork(
+        offset: Int,
+        pageSize: Int,
+        crossinline onSuccess: suspend (pokemons: List<PokemonEntity>) -> Unit
+    ): List<Pokemon> = coroutineScope {
+        val pokemons =
+            networkDataSource.getPokemons(offset = offset, limit = pageSize).results.map {
+                async {
+                    loadDetails(it)
+                }
+            }.map {
+                it.await()
+            }
 
-        return networkPokemons
+        onSuccess(pokemons.map(Pokemon::toEntity))
+
+        pokemons
     }
+
+    private suspend inline fun loadDetails(pokemonNetworkDto: PokemonNetworkDto): Pokemon =
+        pokemonDetailsNetworkConverter.convert(
+            pokemonDetailsNetworkDataSource.getPokemonDetailsByName(
+                pokemonNetworkDto.name
+            )
+        )
 }

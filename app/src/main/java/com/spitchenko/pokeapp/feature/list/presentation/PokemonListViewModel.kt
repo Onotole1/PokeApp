@@ -8,21 +8,20 @@ import com.spitchenko.pokeapp.component.messaging.Message
 import com.spitchenko.pokeapp.component.paging.MutablePagingUiModel
 import com.spitchenko.pokeapp.component.paging.PagingState
 import com.spitchenko.pokeapp.component.paging.PagingUiModel
-import com.spitchenko.pokeapp.feature.list.domain.usecase.GetPokemonDetailsUseCase
+import com.spitchenko.pokeapp.feature.list.domain.model.Pokemon
 import com.spitchenko.pokeapp.feature.list.domain.usecase.GetPokemonsUseCase
 import com.spitchenko.pokeapp.feature.list.domain.usecase.RefreshPokemonsUseCase
 import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BindingClass
 import com.spitchenko.pokeapp.feature.list.presentation.model.ErrorUiModel
-import com.spitchenko.pokeapp.feature.list.presentation.model.PokemonState
 import com.spitchenko.pokeapp.feature.list.presentation.model.PokemonUiModel
 import com.spitchenko.pokeapp.feature.list.presentation.model.ProgressUiModel
+import com.spitchenko.pokeapp.feature.list.presentation.model.toUiModel
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 class PokemonListViewModel(
     private val getPokemonsUseCase: GetPokemonsUseCase,
     private val refreshPokemonsUseCase: RefreshPokemonsUseCase,
-    private val getPokemonDetailsUseCase: GetPokemonDetailsUseCase,
     override val coroutineContext: CoroutineContext,
     private val pageSize: Int,
     private val viewModelJob: Job
@@ -37,8 +36,6 @@ class PokemonListViewModel(
 
     private var pokemons: List<PokemonUiModel> = emptyList()
 
-    private val progressUiModel = ProgressUiModel()
-
     private var loadPageJob: Job? = null
 
     private var currentState: PagingState<PokemonUiModel> = Empty()
@@ -48,29 +45,6 @@ class PokemonListViewModel(
     fun refresh(): Unit = currentState.refresh()
 
     fun retry(): Unit = currentState.retry()
-
-    fun retryItem(index: Int, item: PokemonUiModel) {
-        launch {
-            try {
-                _uiModel.data.set(
-                    index,
-                    PokemonUiModel(PokemonState.Progress(item.pokemonState.name))
-                )
-
-                val pokemonDetails = getPokemonDetailsUseCase(item.pokemonState.name)
-
-                _uiModel.data.set(
-                    index, PokemonUiModel(
-                        PokemonState.Data(pokemonDetails)
-                    )
-                )
-            } catch (cancellationException: CancellationException) {
-                throw cancellationException
-            } catch (throwable: Throwable) {
-                failItem(index, item, throwable)
-            }
-        }
-    }
 
     private inner class Empty : PagingState<PokemonUiModel> {
 
@@ -182,7 +156,7 @@ class PokemonListViewModel(
 
             currentState = PageProgress()
 
-            _uiModel.data.add(progressUiModel)
+            _uiModel.data.add(ProgressUiModel)
 
             startLoading()
         }
@@ -210,7 +184,7 @@ class PokemonListViewModel(
 
             with(_uiModel) {
                 data.transaction {
-                    set(lastIndex, progressUiModel)
+                    set(lastIndex, ProgressUiModel)
                 }
             }
 
@@ -256,9 +230,7 @@ class PokemonListViewModel(
 
             currentState = Data()
 
-            with(_uiModel) {
-                refreshProgressVisible.value = false
-            }
+            _uiModel.refreshProgressVisible.value = false
 
             _messageEvent.sendEvent(message)
         }
@@ -332,13 +304,7 @@ class PokemonListViewModel(
             try {
                 val listSize = uiModel.data.size()
 
-                val nextPage = getPokemonsUseCase(pageSize, listSize).map {
-                    PokemonUiModel(PokemonState.Progress(it.name))
-                }
-
-                nextPage.forEachIndexed { index, pokemonUiModel ->
-                    loadDetails(index + pokemons.size, pokemonUiModel)
-                }
+                val nextPage = getPokemonsUseCase(pageSize, listSize).map(Pokemon::toUiModel)
 
                 currentState.newData(nextPage)
             } catch (exception: CancellationException) {
@@ -353,11 +319,7 @@ class PokemonListViewModel(
         viewModelJob.cancelChildren()
         launch {
             try {
-                val newPage = refreshPokemonsUseCase(pageSize).map {
-                    PokemonUiModel(PokemonState.Progress(it.name))
-                }
-
-                newPage.forEachIndexed(::loadDetails)
+                val newPage = refreshPokemonsUseCase(pageSize).map(Pokemon::toUiModel)
 
                 _uiModel.data.clear()
                 currentState.newData(newPage)
@@ -367,36 +329,6 @@ class PokemonListViewModel(
                 fail(throwable)
             }
         }
-    }
-
-    private fun loadDetails(index: Int, item: PokemonUiModel) {
-        launch {
-            try {
-                val pokemonDetails = getPokemonDetailsUseCase(item.pokemonState.name)
-
-                _uiModel.data.set(
-                    index, PokemonUiModel(
-                        PokemonState.Data(pokemonDetails)
-                    )
-                )
-            } catch (cancellationException: CancellationException) {
-                throw cancellationException
-            } catch (throwable: Throwable) {
-                failItem(index, item, throwable)
-            }
-        }
-    }
-
-    private fun failItem(index: Int, item: PokemonUiModel, throwable: Throwable) {
-        _uiModel.data.set(
-            index,
-            PokemonUiModel(
-                PokemonState.Error(
-                    item.pokemonState.name,
-                    throwable.toUserFriendlyError()
-                )
-            )
-        )
     }
 
     private fun fail(throwable: Throwable) {

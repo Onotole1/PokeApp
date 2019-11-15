@@ -1,9 +1,9 @@
 package com.spitchenko.pokeapp.feature.list.data.database
 
-import com.spitchenko.pokeapp.feature.list.data.database.model.PokemonDetailsEntity
+import com.spitchenko.pokeapp.feature.list.data.database.model.PokemonEntity
 import com.spitchenko.pokeapp.feature.list.domain.model.*
 
-fun PokemonDetailsEntity.toDetails(): PokemonDetails = PokemonDetails(
+fun PokemonEntity.toPokemon(): Pokemon = Pokemon(
     name = name,
     height = Centimeters(height),
     weight = Kilograms(weight),
@@ -16,7 +16,7 @@ fun PokemonDetailsEntity.toDetails(): PokemonDetails = PokemonDetails(
     }
 )
 
-fun PokemonDetails.toEntity(): PokemonDetailsEntity = PokemonDetailsEntity(
+fun Pokemon.toEntity(): PokemonEntity = PokemonEntity(
     name = name,
     height = height.value,
     weight = weight.value,

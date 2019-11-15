@@ -2,8 +2,8 @@ package com.spitchenko.pokeapp.feature.list.presentation
 
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
+import com.spitchenko.pokeapp.R
 import com.spitchenko.pokeapp.databinding.ItemErrorBinding
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BinderAdapter
 import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BindingViewHolder
 import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.LayoutId
 import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.ViewHolderFactory
@@ -11,11 +11,9 @@ import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.ViewHolder
 class ItemErrorViewHolderFactory(private val viewModel: PokemonListViewModel) : ViewHolderFactory {
 
     override fun create(
-        parent: ViewGroup,
-        layoutId: LayoutId,
-        adapter: BinderAdapter
+        parent: ViewGroup
     ): BindingViewHolder<ViewDataBinding> =
-        BindingViewHolder<ItemErrorBinding>(parent, layoutId).apply {
+        BindingViewHolder<ItemErrorBinding>(parent, LayoutId(R.layout.item_error)).apply {
             binding.itemErrorRetryButton.setOnClickListener {
                 viewModel.retry()
             }

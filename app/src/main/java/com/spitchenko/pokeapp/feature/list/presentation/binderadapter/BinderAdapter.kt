@@ -1,35 +1,33 @@
 package com.spitchenko.pokeapp.feature.list.presentation.binderadapter
 
 import android.view.ViewGroup
+import androidx.collection.ArrayMap
+import androidx.collection.arrayMapOf
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import kotlin.reflect.KClass
 
 class BinderAdapter(
-    vararg factories: Pair<LayoutId, ViewHolderFactory>
+    private val factory: ArrayMap<KClass<out BindingClass>, ViewHolderFactory>
 ) : RecyclerView.Adapter<BindingViewHolder<ViewDataBinding>>() {
-
-    private val factory = mapOf(*factories)
 
     var itemList: List<BindingClass> = emptyList()
         private set
 
     override fun getItemCount(): Int = itemList.size
 
-    override fun getItemViewType(position: Int): Int =
-        itemList.getOrNull(position)?.layoutId ?: super.getItemViewType(position)
+    override fun getItemViewType(position: Int): Int {
+        val bindingItem = itemList.getOrNull(position) ?: return super.getItemViewType(position)
+
+        return factory.indexOfKey(bindingItem::class)
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): BindingViewHolder<ViewDataBinding> {
-        val layoutId = LayoutId(viewType)
-
-        return factory[layoutId]?.create(parent, layoutId, this) ?: BindingViewHolder(
-            parent,
-            layoutId
-        )
-    }
+    ): BindingViewHolder<ViewDataBinding> =
+        factory.valueAt(viewType).create(parent)
 
     fun setItems(diffResult: DiffUtil.DiffResult, items: List<BindingClass>) {
         itemList = items
@@ -42,3 +40,6 @@ class BinderAdapter(
         holder.binding.executePendingBindings()
     }
 }
+
+fun <T : BindingClass> binderAdapterOf(vararg factories: Pair<KClass<out T>, ViewHolderFactory>): BinderAdapter =
+    BinderAdapter(arrayMapOf(*factories))

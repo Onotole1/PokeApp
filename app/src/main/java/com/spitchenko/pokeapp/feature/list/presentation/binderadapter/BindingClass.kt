@@ -4,8 +4,6 @@ import androidx.databinding.ViewDataBinding
 
 interface BindingClass {
 
-	val layoutId: Int
-
 	val itemId: Long
 
 	fun areContentsTheSame(other: BindingClass): Boolean

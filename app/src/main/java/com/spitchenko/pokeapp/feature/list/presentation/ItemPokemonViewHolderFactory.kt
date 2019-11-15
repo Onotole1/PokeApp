@@ -1,57 +1,33 @@
 package com.spitchenko.pokeapp.feature.list.presentation
 
-import android.content.Context
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.NavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
-import com.spitchenko.pokeapp.component.extensions.getAsInstanceAt
-import com.spitchenko.pokeapp.component.extensions.showMessage
+import com.spitchenko.pokeapp.R
 import com.spitchenko.pokeapp.databinding.ItemPokemonBinding
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BinderAdapter
+import com.spitchenko.pokeapp.feature.list.domain.model.Pokemon
 import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BindingViewHolder
 import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.LayoutId
 import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.ViewHolderFactory
-import com.spitchenko.pokeapp.feature.list.presentation.model.PokemonState
-import com.spitchenko.pokeapp.feature.list.presentation.model.PokemonUiModel
 import com.spitchenko.pokeapp.feature.list.presentation.model.toParcel
 
 class ItemPokemonViewHolderFactory(
-    private val context: Context,
-    private val navController: NavController,
-    private val viewModel: PokemonListViewModel
+    private val navController: NavController
 ) : ViewHolderFactory {
 
     override fun create(
-        parent: ViewGroup,
-        layoutId: LayoutId,
-        adapter: BinderAdapter
+        parent: ViewGroup
     ): BindingViewHolder<ViewDataBinding> =
-        BindingViewHolder<ItemPokemonBinding>(parent, layoutId).apply {
-            binding.itemPokemonRetryButton.setOnClickListener {
-                val index = adapterPosition
-
-                viewModel.retryItem(index, adapter.itemList[index] as PokemonUiModel)
-            }
-            binding.itemPokemonErrorInfoButton.setOnClickListener {
-                val item: PokemonUiModel =
-                    adapter.itemList.getAsInstanceAt(adapterPosition)
-
-                val message = (item.pokemonState as PokemonState.Error).message
-
-                context.showMessage(message)
-            }
+        BindingViewHolder<ItemPokemonBinding>(parent, LayoutId(R.layout.item_pokemon)).apply {
             itemView.setOnClickListener {
-                val item: PokemonUiModel =
-                    adapter.itemList.getAsInstanceAt(adapterPosition)
+                val pokemon: Pokemon = requireNotNull(binding.pokemon)
 
-                val details = (item.pokemonState as PokemonState.Data).details
-
-                val transitionName = binding.itemPokemonImage.transitionName
+                val transitionName = pokemon.name
 
                 navController.navigate(
                     PokemonListFragmentDirections.actionPokemonListFragmentToPokemonDetailsFragment(
-                        details.toParcel(),
+                        pokemon.toParcel(),
                         transitionName
                     ),
                     FragmentNavigatorExtras(

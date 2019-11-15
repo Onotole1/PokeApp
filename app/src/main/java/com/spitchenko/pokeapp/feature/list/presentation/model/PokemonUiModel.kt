@@ -2,16 +2,13 @@ package com.spitchenko.pokeapp.feature.list.presentation.model
 
 import androidx.databinding.ViewDataBinding
 import com.spitchenko.pokeapp.BR
-import com.spitchenko.pokeapp.R
+import com.spitchenko.pokeapp.feature.list.domain.model.Pokemon
 import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BindingClass
 
-private const val TRANSITION_NAME = "PokemonImageTransition"
+data class PokemonUiModel(val pokemon: Pokemon) : BindingClass {
 
-data class PokemonUiModel(val pokemonState: PokemonState): BindingClass {
-
-    override val layoutId: Int = R.layout.item_pokemon
     override val itemId: Long by lazy(LazyThreadSafetyMode.NONE) {
-        pokemonState.name.hashCode().toLong()
+        pokemon.image.hashCode().toLong() + pokemon.name.hashCode()
     }
 
     override fun areContentsTheSame(other: BindingClass): Boolean {
@@ -19,34 +16,12 @@ data class PokemonUiModel(val pokemonState: PokemonState): BindingClass {
             return false
         }
 
-        return other.pokemonState == pokemonState
+        return other.pokemon == pokemon
     }
 
     override fun bind(viewDataBinding: ViewDataBinding, position: Int) {
-        viewDataBinding.setVariable(BR.name, pokemonState.name)
-        viewDataBinding.setVariable(BR.transitionName, TRANSITION_NAME + position)
-        when (pokemonState) {
-            is PokemonState.Data -> {
-                viewDataBinding.setVariable(BR.success, true)
-                viewDataBinding.setVariable(BR.progress, false)
-                viewDataBinding.setVariable(BR.error, false)
-                viewDataBinding.setVariable(BR.imageUrl, pokemonState.details.image?.url)
-            }
-
-            is PokemonState.Progress -> {
-                viewDataBinding.setVariable(BR.success, false)
-                viewDataBinding.setVariable(BR.progress, true)
-                viewDataBinding.setVariable(BR.error, false)
-                viewDataBinding.setVariable(BR.imageUrl, null)
-            }
-
-            is PokemonState.Error -> {
-                viewDataBinding.setVariable(BR.success, false)
-                viewDataBinding.setVariable(BR.progress, false)
-                viewDataBinding.setVariable(BR.error, true)
-                viewDataBinding.setVariable(BR.errorMessage, pokemonState.message)
-                viewDataBinding.setVariable(BR.imageUrl, null)
-            }
-        }
+        viewDataBinding.setVariable(BR.pokemon, pokemon)
     }
 }
+
+fun Pokemon.toUiModel(): PokemonUiModel = PokemonUiModel(this)
