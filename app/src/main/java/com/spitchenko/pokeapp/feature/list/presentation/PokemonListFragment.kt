@@ -9,12 +9,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.spitchenko.pokeapp.R
+import com.spitchenko.pokeapp.component.binderadapter.DefaultViewHolderFactory
+import com.spitchenko.pokeapp.component.binderadapter.LayoutId
+import com.spitchenko.pokeapp.component.binderadapter.binderAdapterOf
 import com.spitchenko.pokeapp.component.extensions.getViewModel
 import com.spitchenko.pokeapp.component.extensions.showMessage
 import com.spitchenko.pokeapp.databinding.PokemonListFragmentBinding
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.DefaultViewHolderFactory
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.LayoutId
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.binderAdapterOf
 import com.spitchenko.pokeapp.feature.list.presentation.model.ErrorUiModel
 import com.spitchenko.pokeapp.feature.list.presentation.model.PokemonUiModel
 import com.spitchenko.pokeapp.feature.list.presentation.model.ProgressUiModel

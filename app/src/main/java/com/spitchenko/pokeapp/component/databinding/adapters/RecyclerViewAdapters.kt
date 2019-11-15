@@ -4,9 +4,9 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BinderAdapter
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BindingClass
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BindingDiffUtilCallback
+import com.spitchenko.pokeapp.component.binderadapter.BinderAdapter
+import com.spitchenko.pokeapp.component.binderadapter.BindingClass
+import com.spitchenko.pokeapp.component.binderadapter.BindingDiffUtilCallback
 
 @BindingAdapter("onScrolledToFooter")
 fun RecyclerView.setOnScrolledToFooter(action: () -> Unit) {

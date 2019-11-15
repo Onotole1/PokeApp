@@ -5,11 +5,11 @@ import androidx.databinding.ViewDataBinding
 import androidx.navigation.NavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.spitchenko.pokeapp.R
+import com.spitchenko.pokeapp.component.binderadapter.BindingViewHolder
+import com.spitchenko.pokeapp.component.binderadapter.LayoutId
+import com.spitchenko.pokeapp.component.binderadapter.ViewHolderFactory
 import com.spitchenko.pokeapp.databinding.ItemPokemonBinding
 import com.spitchenko.pokeapp.feature.list.domain.model.Pokemon
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BindingViewHolder
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.LayoutId
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.ViewHolderFactory
 import com.spitchenko.pokeapp.feature.list.presentation.model.toParcel
 
 class ItemPokemonViewHolderFactory(

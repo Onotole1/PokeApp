@@ -1,4 +1,4 @@
-package com.spitchenko.pokeapp.feature.list.presentation.binderadapter
+package com.spitchenko.pokeapp.component.binderadapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

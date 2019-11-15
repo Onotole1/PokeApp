@@ -3,10 +3,10 @@ package com.spitchenko.pokeapp.feature.list.presentation
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import com.spitchenko.pokeapp.R
+import com.spitchenko.pokeapp.component.binderadapter.BindingViewHolder
+import com.spitchenko.pokeapp.component.binderadapter.LayoutId
+import com.spitchenko.pokeapp.component.binderadapter.ViewHolderFactory
 import com.spitchenko.pokeapp.databinding.ItemErrorBinding
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BindingViewHolder
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.LayoutId
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.ViewHolderFactory
 
 class ItemErrorViewHolderFactory(private val viewModel: PokemonListViewModel) : ViewHolderFactory {
 

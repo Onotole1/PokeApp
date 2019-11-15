@@ -1,7 +1,7 @@
 package com.spitchenko.pokeapp.feature.list.presentation.model
 
 import androidx.databinding.ViewDataBinding
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BindingClass
+import com.spitchenko.pokeapp.component.binderadapter.BindingClass
 
 private const val DEFAULT_ID = 3490343L
 

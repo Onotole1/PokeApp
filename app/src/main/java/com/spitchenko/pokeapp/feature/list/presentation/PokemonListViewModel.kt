@@ -1,6 +1,7 @@
 package com.spitchenko.pokeapp.feature.list.presentation
 
 import androidx.lifecycle.ViewModel
+import com.spitchenko.pokeapp.component.binderadapter.BindingClass
 import com.spitchenko.pokeapp.component.extensions.*
 import com.spitchenko.pokeapp.component.lifecycle.MutableSingleLiveEvent
 import com.spitchenko.pokeapp.component.lifecycle.SingleLiveEvent
@@ -11,7 +12,6 @@ import com.spitchenko.pokeapp.component.paging.PagingUiModel
 import com.spitchenko.pokeapp.feature.list.domain.model.Pokemon
 import com.spitchenko.pokeapp.feature.list.domain.usecase.GetPokemonsUseCase
 import com.spitchenko.pokeapp.feature.list.domain.usecase.RefreshPokemonsUseCase
-import com.spitchenko.pokeapp.feature.list.presentation.binderadapter.BindingClass
 import com.spitchenko.pokeapp.feature.list.presentation.model.ErrorUiModel
 import com.spitchenko.pokeapp.feature.list.presentation.model.PokemonUiModel
 import com.spitchenko.pokeapp.feature.list.presentation.model.ProgressUiModel
