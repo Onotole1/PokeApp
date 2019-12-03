@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -12,7 +13,9 @@ import com.spitchenko.pokeapp.R
 import com.spitchenko.pokeapp.component.binderadapter.DefaultViewHolderFactory
 import com.spitchenko.pokeapp.component.binderadapter.LayoutId
 import com.spitchenko.pokeapp.component.binderadapter.binderAdapterOf
+import com.spitchenko.pokeapp.component.extensions.doOnApplyWindowInsets
 import com.spitchenko.pokeapp.component.extensions.getViewModel
+import com.spitchenko.pokeapp.component.extensions.setFullScreen
 import com.spitchenko.pokeapp.component.extensions.showMessage
 import com.spitchenko.pokeapp.databinding.PokemonListFragmentBinding
 import com.spitchenko.pokeapp.feature.list.presentation.model.ErrorUiModel
@@ -47,6 +50,8 @@ class PokemonListFragment @Inject constructor(
             lifecycleOwner = viewLifecycleOwner
         }
 
+        binding.root.setFullScreen()
+
         val pokemonsAdapter = binderAdapterOf(
             ErrorUiModel::class to ItemErrorViewHolderFactory(viewModel),
             PokemonUiModel::class to ItemPokemonViewHolderFactory(
@@ -64,6 +69,14 @@ class PokemonListFragment @Inject constructor(
                     DividerItemDecoration.VERTICAL
                 )
             )
+        }
+
+        binding.pokemonsList.doOnApplyWindowInsets { insets, padding ->
+            binding.pokemonsList.updatePadding(
+                bottom = padding.bottom + insets.systemWindowInsetBottom,
+                top = padding.top + insets.systemWindowInsetTop
+            )
+            insets.consumeSystemWindowInsets()
         }
 
         binding.viewModel = viewModel

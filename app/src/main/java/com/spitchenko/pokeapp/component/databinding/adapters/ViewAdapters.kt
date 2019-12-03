@@ -11,12 +11,3 @@ fun View.setVisibleOrGone(visibleOrGone: Boolean) {
         View.GONE
     }
 }
-
-@BindingAdapter("visibleOrInvisible")
-fun View.setVisibleOrInvisible(visibleOrInvisible: Boolean) {
-    visibility = if (visibleOrInvisible) {
-        View.VISIBLE
-    } else {
-        View.INVISIBLE
-    }
-}
