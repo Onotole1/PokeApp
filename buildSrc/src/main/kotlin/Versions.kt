@@ -34,7 +34,6 @@ object Versions {
 	const val GSON = "2.8.5"
 
 	const val OK_HTTP = "4.0.0"
-	const val OK_HTTP_DOWNLOADER = "1.1.0"
 
 	const val RETROFIT = "2.6.0"
 
@@ -48,7 +47,9 @@ object Versions {
 
 	const val NAVIGATION = "2.1.0-alpha06"
 
-	const val LIFECYCLE_EXTENSION = "2.2.0-alpha05"
+	const val LIFECYCLE_EXTENSION = "2.2.0-rc03"
 
 	const val COROUTINES_VERSION = "1.3.0"
+
+	const val SAVED_STATE_VERSION = "1.0.0-beta01"
 }

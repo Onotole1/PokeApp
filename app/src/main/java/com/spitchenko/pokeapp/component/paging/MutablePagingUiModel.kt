@@ -1,15 +1,17 @@
 package com.spitchenko.pokeapp.component.paging
 
-import com.spitchenko.pokeapp.component.extensions.MutableLiveData
+import android.os.Parcelable
+import androidx.lifecycle.SavedStateHandle
+import com.spitchenko.pokeapp.component.lifecycle.savedStateLiveData
 import com.spitchenko.pokeapp.component.messaging.Message
 
-class MutablePagingUiModel<T> : PagingUiModel<T> {
-    override val emptyProgressVisible = MutableLiveData(false)
-    override val emptyErrorVisible = MutableLiveData(false)
-    override val emptyError = MutableLiveData<Message?>(null)
-    override val emptyVisible = MutableLiveData(false)
-    override val emptyText = MutableLiveData<Message?>(null)
-    override val dataVisible = MutableLiveData(false)
-    override val data = MutableLiveData<List<T>>(emptyList())
-    override val refreshProgressVisible = MutableLiveData(false)
+class MutablePagingUiModel<T : Parcelable>(savedStateHandle: SavedStateHandle) : PagingUiModel<T> {
+    override val emptyProgressVisible by savedStateHandle.savedStateLiveData(false)
+    override val emptyErrorVisible by savedStateHandle.savedStateLiveData(false)
+    override val emptyError by savedStateHandle.savedStateLiveData<Message>()
+    override val emptyVisible by savedStateHandle.savedStateLiveData(false)
+    override val emptyText by savedStateHandle.savedStateLiveData<Message>()
+    override val dataVisible by savedStateHandle.savedStateLiveData(false)
+    override val data by savedStateHandle.savedStateLiveData<List<T>>(emptyList())
+    override val refreshProgressVisible by savedStateHandle.savedStateLiveData(false)
 }

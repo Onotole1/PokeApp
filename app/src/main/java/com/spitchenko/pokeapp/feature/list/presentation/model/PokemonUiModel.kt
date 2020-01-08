@@ -4,24 +4,20 @@ import androidx.databinding.ViewDataBinding
 import com.spitchenko.pokeapp.BR
 import com.spitchenko.pokeapp.component.binderadapter.BindingClass
 import com.spitchenko.pokeapp.feature.list.domain.model.Pokemon
+import kotlinx.android.parcel.IgnoredOnParcel
+import kotlinx.android.parcel.Parcelize
 
-data class PokemonUiModel(val pokemon: Pokemon) : BindingClass {
+@Parcelize
+data class PokemonUiModel(val pokemon: PokemonDetailsParcel) : BindingClass {
 
+    @IgnoredOnParcel
     override val itemId: Long by lazy(LazyThreadSafetyMode.NONE) {
-        pokemon.image.hashCode().toLong() + pokemon.name.hashCode()
+        pokemon.details.image.hashCode().toLong() + pokemon.details.name.hashCode()
     }
 
-    override fun areContentsTheSame(other: BindingClass): Boolean {
-        if (other !is PokemonUiModel) {
-            return false
-        }
-
-        return other.pokemon == pokemon
-    }
-
-    override fun bind(viewDataBinding: ViewDataBinding, position: Int) {
-        viewDataBinding.setVariable(BR.pokemon, pokemon)
+    override fun bind(viewDataBinding: ViewDataBinding) {
+        viewDataBinding.setVariable(BR.pokemonParcel, pokemon)
     }
 }
 
-fun Pokemon.toUiModel(): PokemonUiModel = PokemonUiModel(this)
+fun Pokemon.toUiModel(): PokemonUiModel = PokemonUiModel(toParcel())

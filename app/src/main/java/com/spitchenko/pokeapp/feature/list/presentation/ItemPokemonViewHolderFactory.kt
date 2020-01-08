@@ -9,8 +9,7 @@ import com.spitchenko.pokeapp.component.binderadapter.BindingViewHolder
 import com.spitchenko.pokeapp.component.binderadapter.LayoutId
 import com.spitchenko.pokeapp.component.binderadapter.ViewHolderFactory
 import com.spitchenko.pokeapp.databinding.ItemPokemonBinding
-import com.spitchenko.pokeapp.feature.list.domain.model.Pokemon
-import com.spitchenko.pokeapp.feature.list.presentation.model.toParcel
+import com.spitchenko.pokeapp.feature.list.presentation.model.PokemonDetailsParcel
 
 class ItemPokemonViewHolderFactory(
     private val navController: NavController
@@ -21,13 +20,13 @@ class ItemPokemonViewHolderFactory(
     ): BindingViewHolder<ViewDataBinding> =
         BindingViewHolder<ItemPokemonBinding>(parent, LayoutId(R.layout.item_pokemon)).apply {
             itemView.setOnClickListener {
-                val pokemon: Pokemon = requireNotNull(binding.pokemon)
+                val pokemon: PokemonDetailsParcel = requireNotNull(binding.pokemonParcel)
 
-                val transitionName = pokemon.name
+                val transitionName = pokemon.details.name
 
                 navController.navigate(
                     PokemonListFragmentDirections.actionPokemonListFragmentToPokemonDetailsFragment(
-                        pokemon.toParcel(),
+                        pokemon,
                         transitionName
                     ),
                     FragmentNavigatorExtras(

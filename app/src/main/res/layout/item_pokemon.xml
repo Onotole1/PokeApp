@@ -4,13 +4,13 @@
 
     <data>
 
-        <import type="com.spitchenko.pokeapp.feature.list.domain.model.Pokemon" />
+        <import type="com.spitchenko.pokeapp.feature.list.presentation.model.PokemonDetailsParcel" />
 
         <import type="com.spitchenko.pokeapp.R" />
 
         <variable
-            name="pokemon"
-            type="Pokemon" />
+            name="pokemonParcel"
+            type="PokemonDetailsParcel" />
     </data>
 
     <LinearLayout
@@ -22,11 +22,11 @@
         <ImageView
             android:id="@+id/item_pokemon_image"
             imagePlaceholder="@{R.drawable.ic_pokeball_pokemon}"
-            imageUrl="@{pokemon.image}"
+            imageUrl="@{pokemonParcel.details.image}"
             android:layout_width="@dimen/item_pokemon_image_size"
             android:layout_height="@dimen/item_pokemon_image_size"
             android:contentDescription="@string/pokemon_content_description"
-            android:transitionName="@{pokemon.name}"
+            android:transitionName="@{pokemonParcel.details.name}"
             tools:src="@drawable/ic_pokeball_pokemon" />
 
         <TextView
@@ -36,7 +36,7 @@
             android:layout_weight="1"
             android:maxLines="1"
             android:padding="@dimen/offset_8"
-            android:text="@{pokemon.name}"
+            android:text="@{pokemonParcel.details.name}"
             tools:text="Пикачу" />
     </LinearLayout>
 </layout>

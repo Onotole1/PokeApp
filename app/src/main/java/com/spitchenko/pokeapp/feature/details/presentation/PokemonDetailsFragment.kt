@@ -14,20 +14,19 @@ import com.spitchenko.pokeapp.component.binderadapter.DefaultViewHolderFactory
 import com.spitchenko.pokeapp.component.binderadapter.LayoutId
 import com.spitchenko.pokeapp.component.binderadapter.binderAdapterOf
 import com.spitchenko.pokeapp.component.extensions.doOnApplyWindowInsets
-import com.spitchenko.pokeapp.component.extensions.getViewModel
 import com.spitchenko.pokeapp.component.extensions.initNavigateUpClickListener
+import com.spitchenko.pokeapp.component.lifecycle.ViewModelProviders
 import com.spitchenko.pokeapp.component.extensions.setFullScreen
-import com.spitchenko.pokeapp.component.lifecycle.ViewModelFactory
+import com.spitchenko.pokeapp.component.lifecycle.extension.viewModels
 import com.spitchenko.pokeapp.component.log.debug
 import com.spitchenko.pokeapp.databinding.PokemonDetailsFragmentBinding
 import com.spitchenko.pokeapp.feature.details.presentation.model.PokemonDetailUiModel
-import javax.inject.Inject
 
-class PokemonDetailsFragment @Inject constructor(
-    private val pokemonDetailsUiConverter: PokemonDetailsUiConverter
+class PokemonDetailsFragment(
+    viewModelProviders: ViewModelProviders
 ) : Fragment() {
 
-    private lateinit var viewModel: PokemonDetailsViewModel
+    private val viewModel: PokemonDetailsViewModel by viewModels(viewModelProviders)
 
     private lateinit var args: PokemonDetailsFragmentArgs
 
@@ -40,13 +39,6 @@ class PokemonDetailsFragment @Inject constructor(
         args = PokemonDetailsFragmentArgs.fromBundle(requireArguments())
 
         postponeEnterTransition()
-
-        viewModel = getViewModel(ViewModelFactory {
-
-            val pokemonDetails = args.pokemonDetails.details
-
-            PokemonDetailsViewModel(pokemonDetails, pokemonDetailsUiConverter)
-        })
     }
 
     override fun onCreateView(

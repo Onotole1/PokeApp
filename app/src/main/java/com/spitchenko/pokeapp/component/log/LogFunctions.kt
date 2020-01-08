@@ -7,3 +7,5 @@ import timber.log.Timber
 inline fun debug(message: String) = Timber.d(message)
 
 inline fun info(message: String) = Timber.i(message)
+
+inline fun warning(message: String) = Timber.w(message)

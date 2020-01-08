@@ -36,7 +36,7 @@ class BinderAdapter(
 
     override fun onBindViewHolder(holder: BindingViewHolder<ViewDataBinding>, position: Int) {
         val model = itemList.getOrNull(position) ?: return
-        model.bind(holder.binding, position)
+        model.bind(holder.binding)
         holder.binding.executePendingBindings()
     }
 }

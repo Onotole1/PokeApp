@@ -1,37 +1,43 @@
 package com.spitchenko.pokeapp.feature.list.presentation.di
 
-import androidx.lifecycle.ViewModelProvider
-import com.spitchenko.pokeapp.component.lifecycle.ViewModelFactory
+import androidx.lifecycle.SavedStateHandle
+import com.spitchenko.pokeapp.component.lifecycle.ViewModelCreator
+import com.spitchenko.pokeapp.component.lifecycle.annotations.ViewModelKey
+import com.spitchenko.pokeapp.feature.details.presentation.di.PokemonDetailsSubcomponent
 import com.spitchenko.pokeapp.feature.list.domain.usecase.GetPokemonsUseCase
 import com.spitchenko.pokeapp.feature.list.domain.usecase.RefreshPokemonsUseCase
 import com.spitchenko.pokeapp.feature.list.presentation.PokemonListViewModel
 import com.spitchenko.pokeapp.feature.list.presentation.paging.PAGE_SIZE
 import dagger.Module
 import dagger.Provides
+import dagger.multibindings.IntoMap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 
-@Module
+@Module(subcomponents = [PokemonListSubcomponent::class])
 class PokemonListPresentationModule {
 
+    @ViewModelKey(PokemonListViewModel::class)
+    @IntoMap
     @Provides
     fun providePokemonListViewModelFactory(
         getPokemonsUseCase: GetPokemonsUseCase,
         refreshPokemonsUseCase: RefreshPokemonsUseCase
-    ): ViewModelProvider.Factory {
-        val viewModelJob = SupervisorJob()
-        val coroutineContext = Dispatchers.Main + viewModelJob
+    ): ViewModelCreator =
+        object : ViewModelCreator {
 
-        return ViewModelFactory {
-            PokemonListViewModel(
-                getPokemonsUseCase,
-                refreshPokemonsUseCase,
-                coroutineContext,
-                PAGE_SIZE,
-                viewModelJob
-            ).also {
-                it.showNextPage()
+            override fun create(handle: SavedStateHandle): PokemonListViewModel {
+                val viewModelJob = SupervisorJob()
+                val coroutineContext = Dispatchers.Main + viewModelJob
+
+                return PokemonListViewModel(
+                    getPokemonsUseCase,
+                    refreshPokemonsUseCase,
+                    coroutineContext,
+                    PAGE_SIZE,
+                    viewModelJob,
+                    handle
+                ).also(PokemonListViewModel::restoreState)
             }
         }
-    }
 }

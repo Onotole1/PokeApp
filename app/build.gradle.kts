@@ -55,6 +55,10 @@ android {
 	dataBinding {
 		isEnabled = true
 	}
+
+	androidExtensions {
+		isExperimental = true
+	}
 }
 
 dependencies {
@@ -73,4 +77,5 @@ dependencies {
 	lifecycle()
 	testing()
 	androidTesting()
+	savedState()
 }

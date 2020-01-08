@@ -1,10 +1,12 @@
 package com.spitchenko.pokeapp.feature.list.presentation
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.spitchenko.pokeapp.component.binderadapter.BindingClass
 import com.spitchenko.pokeapp.component.extensions.*
 import com.spitchenko.pokeapp.component.lifecycle.MutableSingleLiveEvent
 import com.spitchenko.pokeapp.component.lifecycle.SingleLiveEvent
+import com.spitchenko.pokeapp.component.lifecycle.delegate
 import com.spitchenko.pokeapp.component.messaging.Message
 import com.spitchenko.pokeapp.component.paging.MutablePagingUiModel
 import com.spitchenko.pokeapp.component.paging.PagingState
@@ -24,13 +26,14 @@ class PokemonListViewModel(
     private val refreshPokemonsUseCase: RefreshPokemonsUseCase,
     override val coroutineContext: CoroutineContext,
     private val pageSize: Int,
-    private val viewModelJob: Job
+    private val viewModelJob: Job,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel(), CoroutineScope {
 
     private val _messageEvent = MutableSingleLiveEvent<Message>()
     val messageEvent: SingleLiveEvent<Message>
         get() = _messageEvent
-    private val _uiModel = MutablePagingUiModel<BindingClass>()
+    private val _uiModel = MutablePagingUiModel<BindingClass>(savedStateHandle)
     val uiModel: PagingUiModel<BindingClass>
         get() = _uiModel
 
@@ -38,7 +41,14 @@ class PokemonListViewModel(
 
     private var loadPageJob: Job? = null
 
-    private var currentState: PagingState<PokemonUiModel> = Empty()
+    private var savedState: State by savedStateHandle.delegate { State.EMPTY }
+
+    private var currentState: PokemonListState = Empty()
+        private set(value) {
+            savedState = value.state
+
+            field = value
+        }
 
     fun showNextPage(): Unit = currentState.showNextPage()
 
@@ -46,7 +56,56 @@ class PokemonListViewModel(
 
     fun retry(): Unit = currentState.retry()
 
-    private inner class Empty : PagingState<PokemonUiModel> {
+    fun restoreState() {
+        when (savedState) {
+            State.EMPTY_PROGRESS -> {
+                currentState = EmptyProgress()
+                currentState.refresh()
+            }
+
+            State.REFRESH -> {
+                currentState = Refresh()
+                currentState.refresh()
+            }
+
+            State.PAGE_PROGRESS -> {
+                currentState = PageProgress()
+                startLoading()
+            }
+
+            State.EMPTY -> {
+                showNextPage()
+            }
+
+            State.DATA -> {
+                currentState = Data()
+            }
+
+            State.PAGE_ERROR -> {
+                currentState = PageError()
+            }
+
+            State.ALL_DATA -> {
+                currentState = AllData()
+            }
+
+            State.EMPTY_DATA -> {
+                currentState = EmptyData()
+            }
+
+            State.EMPTY_ERROR -> {
+                currentState = EmptyError()
+            }
+        }
+    }
+
+    private interface PokemonListState : PagingState<PokemonUiModel> {
+        val state: State
+    }
+
+    private inner class Empty : PokemonListState {
+
+        override val state: State = State.EMPTY
 
         override fun showNextPage() {
             super.showNextPage()
@@ -59,7 +118,9 @@ class PokemonListViewModel(
         }
     }
 
-    private inner class EmptyProgress : PagingState<PokemonUiModel> {
+    private inner class EmptyProgress : PokemonListState {
+
+        override val state: State = State.EMPTY_PROGRESS
 
         override fun refresh() {
             super.refresh()
@@ -107,7 +168,9 @@ class PokemonListViewModel(
         }
     }
 
-    private inner class EmptyError : PagingState<PokemonUiModel> {
+    private inner class EmptyError : PokemonListState {
+
+        override val state: State = State.EMPTY_ERROR
 
         override fun refresh() {
             super.refresh()
@@ -123,7 +186,9 @@ class PokemonListViewModel(
         }
     }
 
-    private inner class EmptyData : PagingState<PokemonUiModel> {
+    private inner class EmptyData : PokemonListState {
+
+        override val state: State = State.EMPTY_DATA
 
         override fun refresh() {
             super.refresh()
@@ -139,7 +204,9 @@ class PokemonListViewModel(
         }
     }
 
-    private inner class Data : PagingState<PokemonUiModel> {
+    private inner class Data : PokemonListState {
+
+        override val state: State = State.DATA
 
         override fun refresh() {
             super.refresh()
@@ -162,7 +229,9 @@ class PokemonListViewModel(
         }
     }
 
-    private inner class PageError : PagingState<PokemonUiModel> {
+    private inner class PageError : PokemonListState {
+
+        override val state: State = State.PAGE_ERROR
 
         override fun refresh() {
             super.refresh()
@@ -192,7 +261,9 @@ class PokemonListViewModel(
         }
     }
 
-    private inner class Refresh : PagingState<PokemonUiModel> {
+    private inner class Refresh : PokemonListState {
+
+        override val state: State = State.REFRESH
 
         override fun refresh() {
             super.refresh()
@@ -236,7 +307,9 @@ class PokemonListViewModel(
         }
     }
 
-    private inner class PageProgress : PagingState<PokemonUiModel> {
+    private inner class PageProgress : PokemonListState {
+
+        override val state: State = State.PAGE_PROGRESS
 
         override fun newData(data: List<PokemonUiModel>) {
             super.newData(data)
@@ -285,7 +358,9 @@ class PokemonListViewModel(
         }
     }
 
-    private inner class AllData : PagingState<PokemonUiModel> {
+    private inner class AllData : PokemonListState {
+
+        override val state: State = State.ALL_DATA
 
         override fun refresh() {
             super.refresh()
@@ -338,5 +413,17 @@ class PokemonListViewModel(
 
     override fun onCleared() {
         viewModelJob.cancel()
+    }
+
+    private enum class State {
+        EMPTY,
+        EMPTY_PROGRESS,
+        EMPTY_ERROR,
+        EMPTY_DATA,
+        DATA,
+        PAGE_ERROR,
+        REFRESH,
+        PAGE_PROGRESS,
+        ALL_DATA
     }
 }

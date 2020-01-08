@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.spitchenko.pokeapp.R
@@ -14,9 +13,10 @@ import com.spitchenko.pokeapp.component.binderadapter.DefaultViewHolderFactory
 import com.spitchenko.pokeapp.component.binderadapter.LayoutId
 import com.spitchenko.pokeapp.component.binderadapter.binderAdapterOf
 import com.spitchenko.pokeapp.component.extensions.doOnApplyWindowInsets
-import com.spitchenko.pokeapp.component.extensions.getViewModel
 import com.spitchenko.pokeapp.component.extensions.setFullScreen
 import com.spitchenko.pokeapp.component.extensions.showMessage
+import com.spitchenko.pokeapp.component.lifecycle.ViewModelProviders
+import com.spitchenko.pokeapp.component.lifecycle.extension.viewModels
 import com.spitchenko.pokeapp.databinding.PokemonListFragmentBinding
 import com.spitchenko.pokeapp.feature.list.presentation.model.ErrorUiModel
 import com.spitchenko.pokeapp.feature.list.presentation.model.PokemonUiModel
@@ -24,16 +24,10 @@ import com.spitchenko.pokeapp.feature.list.presentation.model.ProgressUiModel
 import javax.inject.Inject
 
 class PokemonListFragment @Inject constructor(
-    private val viewModelFactory: ViewModelProvider.Factory
+    viewModelProviders: ViewModelProviders
 ) : Fragment() {
 
-    private lateinit var viewModel: PokemonListViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        viewModel = getViewModel(viewModelFactory)
-    }
+    private val viewModel: PokemonListViewModel by viewModels(viewModelProviders)
 
     override fun onCreateView(
         inflater: LayoutInflater,
